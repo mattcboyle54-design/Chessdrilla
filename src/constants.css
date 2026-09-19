@@ -1,0 +1,15 @@
+/* Define global CSS variables so they can be reused throughout the app */
+:root {
+    --tile-size: 100px;
+    --light-tile: #f0d9b5;
+    --dark-tile: #b58863;
+    --bg-color : #202020;
+}
+
+/* Shrinks the board on smaller screens */
+@media all and (max-width: 450px) {
+    :root {
+        --tile-size: 100px; 
+    }
+}
+

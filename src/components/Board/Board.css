@@ -1,0 +1,23 @@
+.board {
+
+}
+
+
+/* Formats the generated rank/file tiles into an 8x8 grid of squares */
+.tiles {
+    display: grid; 
+    grid-template-columns: repeat(8, var(--tile-size));
+    grid-template-rows: repeat(8, var(--tile-size));    
+    width: calc(var(--tile-size) * 8);
+}
+
+.tile {
+
+}
+
+.tile--light {
+    background-color: var(--light-tile);
+}
+.tile--dark {
+    background-color: var(--dark-tile);
+}
