@@ -1,8 +1,9 @@
 import './Files.css'
-
+//Makes the letters A-H on the board 
+import { getCharacter } from '../../../helper'
 const Files = ({files}) => {
     return <div className = 'files'>
-        {files.map(file => <span key = {file}>{file}</span>)}
+        {files.map(file => <span key = {file}>{getCharacter(file)}</span>)}
     </div>
 }
 

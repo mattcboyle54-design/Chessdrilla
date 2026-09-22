@@ -38,6 +38,6 @@ v0.0 nothing yet
 ## Credits
 
 
-Tutorial-guided implementation of the chessboard and chess rules, based on the YouTube tutorial Create a Chess Game with React by Frontend-Coder.
+Tutorial-guided implementation of the chessboard and chess rules, based on the YouTube tutorial Create a Chess Game with React by Frontend-Coder. His Repo can also be found at https://github.com/felerticia/chess
 Chess piece artwork: “Totoy” by Kosal Sen, licensed under CC BY 4.0.
 

@@ -12,9 +12,9 @@ html, body {
   background: var(--bg-color);
 }
 
-.inter-<uniquifier> {
+.inter-board {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: <weight>;
+  font-weight: 500;
   font-style: normal;
 }
