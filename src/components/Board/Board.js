@@ -1,7 +1,7 @@
 import './Board.css'
 import Files from './bits/Files'
 import Ranks from './bits/Ranks'
-import Pieces from './Pieces/Pieces'
+import Pieces from '../Pieces/Pieces'
 
 //Create a board from ranks and tiles using nested maps. Ranks are 8-1 and tiles are a-h. Each square is a div with the rank and tile as text.
 const Board = () => {

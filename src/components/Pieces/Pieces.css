@@ -15,19 +15,19 @@
 }
 
 
-.piece.bB {background-image: url('../../../assets/bB.svg');}
-.piece.bK {background-image: url('../../../assets/bK.svg');}
-.piece.bN {background-image: url('../../../assets/bN.svg');}
-.piece.bP {background-image: url('../../../assets/bP.svg');}
-.piece.bQ {background-image: url('../../../assets/bQ.svg');}
-.piece.bR{background-image: url('../../../assets/bR.svg');}
+.piece.bb {background-image: url('../../assets/bB.svg');}
+.piece.bk {background-image: url('../../assets/bK.svg');}
+.piece.bn {background-image: url('../../assets/bN.svg');}
+.piece.bp {background-image: url('../../assets/bP.svg');}
+.piece.bq {background-image: url('../../assets/bQ.svg');}
+.piece.br{background-image: url('../../assets/bR.svg');}
 
-.piece.wB {background-image: url('../../../assets/wB.svg');}
-.piece.wK {background-image: url('../../../assets/wK.svg');}
-.piece.wN {background-image: url('../../../assets/wN.svg');}
-.piece.wP {background-image: url('../../../assets/wP.svg');}
-.piece.wQ {background-image: url('../../../assets/wQ.svg');}
-.piece.wR {background-image: url('../../../assets/wR.svg');}
+.piece.wb {background-image: url('../../assets/wB.svg');}
+.piece.wk {background-image: url('../../assets/wK.svg');}
+.piece.wn {background-image: url('../../assets/wN.svg');}
+.piece.wp {background-image: url('../../assets/wP.svg');}
+.piece.wq {background-image: url('../../assets/wQ.svg');}
+.piece.wr {background-image: url('../../assets/wR.svg');}
 
 .piece.p-07{transform: translate(0%,0%);}
 .piece.p-17{transform: translate(100%,0%);}
