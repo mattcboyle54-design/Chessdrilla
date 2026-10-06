@@ -1,8 +1,17 @@
+import arbiter from "../../arbiter/arbiter";
+import { useAppContext } from "../../contexts/Context"
+import { generateCandidateMoves } from "../../reducer/actions/move";
+
 const Piece = ({
     rank,
     file,
     piece,
 }) => {
+
+    const {appState,dispatch} = useAppContext()
+    const {turn, position} = appState; 
+    const currentPosition = position[position.length - 1]
+    
 
     //give information on the piece specifically piece type ie: bk, rank, and file (so you know which piece is moved and from what original spot). Removes the original piece's png with a delay so you can see piece while dragging
     const onDragStart = e=> {
@@ -11,7 +20,10 @@ const Piece = ({
         setTimeout(() => {
             e.target.style.display = 'none'
         })
-      
+        if(turn === piece[0]) {
+            const candidateMoves = arbiter.getRegularMoves({position:currentPosition,piece,rank,file})
+            dispatch(generateCandidateMoves({candidateMoves}))
+        }
     }
     //prevents target.style.display so piece will stay on original tile when illegal move is made 
     const onDragEnd = e=> e.target.style.display = 'block'

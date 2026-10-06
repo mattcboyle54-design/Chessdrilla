@@ -11,12 +11,26 @@ export const reducer = (state, action) => {
                 ...position, 
                 action.payload.newPosition
             ]
-
+            //3. Return the next state from the reducer (which React will set the state to)
             return { 
                 ...state, 
                 turn, 
                 position
                 
+            }
+        }
+
+        case actionTypes.GENERATE_CANDIDATE_MOVES: {
+            return {
+                ...state,
+                candidateMoves : action.payload.candidateMoves
+                
+            }
+        }
+        case actionTypes.CLEAR_CANDIDAATE_MOVES: {
+            return {
+                ...state,
+                candidateMoves: []
             }
         }
         default: 

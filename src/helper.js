@@ -4,12 +4,13 @@ export const getCharacter = i => String.fromCharCode(i + 96);
 
 export const createPosition = () => {
 const position = new Array(8).fill('').map(x=> new Array (8).fill(''))
-    
+ 
+/*
 for (let x=0; x<8; x++) {
     position[1][x] = 'wp'
     position[6][x] = 'bp'
 }
-
+*/
 position[0][0] = 'wr'
 position[0][1] = 'wn'
 position[0][2] = 'wb'

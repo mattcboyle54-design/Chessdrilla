@@ -15,7 +15,7 @@
 }
 
 .tile {
- 
+  position: relative;
 }
 
 .tile--light {
@@ -23,4 +23,32 @@
 }
 .tile--dark {
     background-color: var(--dark-tile);
+}
+
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: calc(.3*var(--tile-size));
+    height: calc(.3*var(--tile-size));
+    background: black;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: .25;
+}
+
+.attacking:after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: calc(var(--tile-size) - 12px);
+    height: calc(var(--tile-size) - 12px);
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    border: 6px solid black;
+    opacity: .25;
 }
