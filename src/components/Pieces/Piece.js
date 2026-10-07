@@ -9,9 +9,7 @@ const Piece = ({
 }) => {
 
     const {appState,dispatch} = useAppContext()
-    const {turn, position} = appState; 
-    const currentPosition = position[position.length - 1]
-    
+    const {turn, castleDirection, position : currentPosition} = appState
 
     //give information on the piece specifically piece type ie: bk, rank, and file (so you know which piece is moved and from what original spot). Removes the original piece's png with a delay so you can see piece while dragging
     const onDragStart = e=> {
@@ -21,7 +19,15 @@ const Piece = ({
             e.target.style.display = 'none'
         })
         if(turn === piece[0]) {
-            const candidateMoves = arbiter.getRegularMoves({position:currentPosition,piece,rank,file})
+            const candidateMoves = 
+                arbiter.getValidMoves({
+                    position : currentPosition[currentPosition.length-1],
+                    prevPosition : currentPosition[currentPosition.length-2],
+                    castleDirection : castleDirection[turn],
+                    piece,
+                    rank,
+                    file
+                })
             dispatch(generateCandidateMoves({candidateMoves}))
         }
     }

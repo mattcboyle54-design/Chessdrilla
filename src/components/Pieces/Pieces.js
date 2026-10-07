@@ -1,12 +1,12 @@
 import './Pieces.css'
 import Piece from './Piece'
 
-import {copyPosition} from '../../helper'
-
 import { useAppContext } from '../../contexts/Context'
 import { clearCandidates, makeNewMove } from '../../reducer/actions/move'
 
 import {useRef} from 'react'
+import arbiter from '../../arbiter/arbiter'
+import { openPromotion } from '../../reducer/actions/popup'
 
 
 //Creates an 8by8 board(data structure) that represents where pieces are. Loops through all 64 positions, if a piece is assigned put Component Piece there with key,rank,file, and piece type. 
@@ -26,20 +26,39 @@ const Pieces = () => {
         const x = 7 - Math.floor((e.clientY - top) / size)
         return {x,y}
     }
+    
+    const openPromotionBox = ({rank,file,x,y})  => 
+        dispatch(openPromotion({
+            rank : Number(rank),
+            file : Number(file),
+            x,
+            y,
+        }))
+    const move = e => {
+        const {x,y} = calculateCoords(e)
+        
+        const [piece,rank,file] = e.dataTransfer.getData("text").split(',')
+        if(appState.candidateMoves?.find(m => m[0] === x && m[1] === y)){
+           if((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)){
+            openPromotionBox({rank,file,x,y})
+           }
+            const newPosition = arbiter.performMove({
+                position : currentPosition,
+                piece,rank,file,
+                x,y
+            })
+            dispatch(makeNewMove({newPosition}))
+        
+        }
+        dispatch(clearCandidates())
+    }
     //Updates the board with reducer dispatch function for the piece move based on the rank and file we got from calculatecoords. Uses the information from onDragstart to grab the original position and remove piece from array
     const onDrop = e => {
-        const newPosition = copyPosition(currentPosition)
-        const{x,y} = calculateCoords(e)
+        e.preventDefault()
 
-        const [p,rank,file] = e.dataTransfer.getData('text').split(',')
+        move (e)
 
-         if(appState.candidateMoves?.find(m => m[0] === x && m[1] === y)){
-            newPosition[rank][file] = ''
-            newPosition[x][y] = p
-            dispatch(makeNewMove({newPosition}))
-        }
-
-        dispatch(clearCandidates())
+        
     }
 
     //allows piece to be dropped 

@@ -1,4 +1,5 @@
 import actionTypes from "./actions/actionTypes"
+import { Status } from "../constant"
 
 export const reducer = (state, action) => {
     switch(action.type) {
@@ -27,12 +28,30 @@ export const reducer = (state, action) => {
                 
             }
         }
+
         case actionTypes.CLEAR_CANDIDAATE_MOVES: {
             return {
                 ...state,
                 candidateMoves: []
             }
         }
+
+        case actionTypes.PROMOTION_OPEN: {
+            return {
+                ...state,
+                status : Status.promoting,
+                promotionSqaure: {...action.payload},
+            }
+        }
+
+        case actionTypes.PROMOTION_CLOSE: {
+            return {
+                ...state,
+                status : Status.ongoing,
+                promotionSqaure : null,
+            }
+        }
+
         default: 
             return state
     }

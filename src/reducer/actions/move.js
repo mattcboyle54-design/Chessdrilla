@@ -20,3 +20,4 @@ export const clearCandidates = () => {
         type: actionTypes.CLEAR_CANDIDAATE_MOVES
     }
 }
+
