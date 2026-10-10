@@ -7,6 +7,9 @@ import { clearCandidates, makeNewMove } from '../../reducer/actions/move'
 import {useRef} from 'react'
 import arbiter from '../../arbiter/arbiter'
 import { openPromotion } from '../../reducer/actions/popup'
+import { getCastleDirections } from '../../arbiter/getMoves'
+import { updateCastling } from '../../reducer/actions/game'
+
 
 
 //Creates an 8by8 board(data structure) that represents where pieces are. Loops through all 64 positions, if a piece is assigned put Component Piece there with key,rank,file, and piece type. 
@@ -34,6 +37,16 @@ const Pieces = () => {
             x,
             y,
         }))
+    
+    const updateCastlingState = ({piece,rank,file}) =>{
+        const direction = getCastleDirections({
+            castleDirection : appState.castleDirection,
+            piece,rank,file
+        })
+        if(direction) {
+            dispatch(updateCastling(direction))
+        }
+    }
     const move = e => {
         const {x,y} = calculateCoords(e)
         
@@ -41,6 +54,9 @@ const Pieces = () => {
         if(appState.candidateMoves?.find(m => m[0] === x && m[1] === y)){
            if((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)){
             openPromotionBox({rank,file,x,y})
+           }
+           if (piece.endsWith('r') || piece.endsWith('k')) {
+            updateCastlingState({piece,rank,file})
            }
             const newPosition = arbiter.performMove({
                 position : currentPosition,

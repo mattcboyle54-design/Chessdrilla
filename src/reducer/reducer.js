@@ -45,12 +45,24 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.PROMOTION_CLOSE: {
-            return {
+
+             return {
                 ...state,
                 status : Status.ongoing,
-                promotionSqaure : null,
+                promotionSquare : null,
             }
         }
+          case actionTypes.CAN_CASTLE: {
+            
+            let {turn , castleDirection} = state
+            castleDirection[turn] = action.payload
+
+            return {
+                ...state,
+                castleDirection,
+            }
+        }
+
 
         default: 
             return state
