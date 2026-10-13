@@ -7,3 +7,15 @@ export const updateCastling = direction => {
     }
 }
 
+export const detectStalemate = () => {
+    return {
+        type : actionTypes.STALEMATE
+    }
+}
+
+export const setupNewGame = (newGameState) => {
+    return{
+        type: actionTypes.NEW_GAME,
+        payload: newGameState
+    }
+}

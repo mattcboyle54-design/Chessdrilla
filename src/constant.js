@@ -5,6 +5,8 @@ export const Status = {
     'promoting' : 'Promoting',
     'black' : 'Black Wins',
     'white' : 'White Wins',
+    'stalemate' : 'Game draws due to stalemate',
+    'insufficient' : 'Game draws due to insufficent material',
 }
 
 export const initGameState = {
@@ -18,3 +20,15 @@ export const initGameState = {
         b: 'both',
     },
 } 
+
+export const createInitialGameState = () => ({
+    position: [createPosition()],
+    turn: 'w',
+    candidateMoves: [],
+    castleDirection: {
+        w: 'both',
+        b: 'both'
+    },
+    status: Status.ongoing,
+    promotionSquare: null
+})

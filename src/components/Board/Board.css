@@ -40,7 +40,7 @@
     opacity: .25;
 }
 
-.attacking:after {
+.attacking::after {
     content: '';
     position: absolute;
     display: block;
@@ -51,4 +51,18 @@
     top: 0;
     border: 6px solid black;
     opacity: .25;
+}
+
+
+.checked::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: var(--tile-size);
+    height: var(--tile-size);
+    background: red;
+    border-radius: 20%;
+    left: 0%;
+    top: 0%;
+    opacity: 70%;
 }
