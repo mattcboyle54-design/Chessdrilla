@@ -10,13 +10,8 @@ html, body {
   place-content: center;
   height: 100vh;
   background: var(--bg-color);
-}
-
-.inter-board {
   font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+  grid-template-columns: auto 220px;
 }
 
 button {

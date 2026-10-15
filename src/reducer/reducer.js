@@ -4,7 +4,7 @@ import { Status } from "../constant"
 export const reducer = (state, action) => {
     switch(action.type) {
         case actionTypes.NEW_MOVE: {
-            let {turn, position} = state 
+            let {turn, position,movesList} = state 
 
             turn = turn === 'w' ? 'b' : 'w'
 
@@ -12,12 +12,17 @@ export const reducer = (state, action) => {
                 ...position, 
                 action.payload.newPosition
             ]
+
+            movesList = [
+                ...movesList,
+                action.payload.newMove
+            ]
             //3. Return the next state from the reducer (which React will set the state to)
             return { 
                 ...state, 
+                movesList,
                 turn, 
-                position
-                
+                position,
             }
         }
 
@@ -26,6 +31,24 @@ export const reducer = (state, action) => {
                 ...state,
                 candidateMoves : action.payload.candidateMoves
                 
+            }
+        }
+
+        case actionTypes.TAKE_BACK: {
+
+            let {position,movesList,turn,castleHistory} = state 
+            
+            if(position.length > 1) {
+                position = position.slice(0,position.length-1)
+                movesList = movesList.slice(0,position.length-1)
+                turn = turn === 'w' ? 'b' : 'w'
+            }
+
+            return {
+                ...state,
+                position,
+                movesList,
+                turn
             }
         }
 
@@ -53,7 +76,7 @@ export const reducer = (state, action) => {
             }
         }
           case actionTypes.CAN_CASTLE: {
-            const {turn , castleDirection} = state
+            const {turn , castleDirection,} = state
 
             return {
                 ...state,
@@ -77,6 +100,19 @@ export const reducer = (state, action) => {
             }
          }
 
+         case actionTypes.INSUFFICENT_MATERIAL: {
+            return {
+                ...state,
+                status: Status.insufficient
+            }
+         }
+
+         case actionTypes.WIN: {
+            return {
+                ...state,
+                status: action.payload === 'w' ? Status.white : Status.black
+            }
+         }
         default: 
             return state
     }

@@ -11,7 +11,7 @@ const GameEnds = ({onClosePopup}) => {
         return null
     }
 
-    const isWin = status.endsWith('wins')
+    const isWin = status.endsWith('Wins')
 
     const newGame = () =>{
         dispatch(setupNewGame(createInitialGameState()))
@@ -22,7 +22,7 @@ const GameEnds = ({onClosePopup}) => {
     return <div className = 'popup--inner popup--inner_center '>
         <h1>{isWin ? status: 'Draw'}</h1>
         <p>{!isWin && status}</p>
-        <div className = {status}></div>
+        <div className = {status}/>
         <button onClick={newGame}>New Game</button>
     </div>
 }

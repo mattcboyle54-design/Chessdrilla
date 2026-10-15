@@ -8,7 +8,8 @@ import {useRef} from 'react'
 import arbiter from '../../arbiter/arbiter'
 import { openPromotion } from '../../reducer/actions/popup'
 import { getCastleDirections } from '../../arbiter/getMoves'
-import { detectStalemate, updateCastling } from '../../reducer/actions/game'
+import { detectCheckmate, detectInsufficentMaterial, detectStalemate, updateCastling } from '../../reducer/actions/game'
+import { getNewMoveNotation } from '../../helper'
 
 
 
@@ -61,6 +62,7 @@ const Pieces = () => {
             openPromotionBox({rank,file,x,y})
             return
            }
+
            if (piece.endsWith('r') || piece.endsWith('k')) {
             updateCastlingState({piece,rank,file})
            }
@@ -69,11 +71,29 @@ const Pieces = () => {
                 piece,rank,file,
                 x,y
             })
-            dispatch(makeNewMove({newPosition}))
+
+            const newMove = getNewMoveNotation({
+                piece,rank,file,x,y,position: currentPosition
+            })
+
+            dispatch(makeNewMove({newPosition,newMove}))
             
-            if(arbiter.isStalemate(newPosition,opponent,castleDirection))
+
+            //Checking for end of game 
+            if(arbiter.isStalemate(newPosition,opponent,castleDirection)){
                 dispatch(detectStalemate())
-                
+            }
+
+            if(arbiter.insufficentMaterial(newPosition)){
+                dispatch(detectInsufficentMaterial())
+            } else if (arbiter.isStalemate(newPosition,opponent,castleDirection)){
+                dispatch(detectStalemate()) 
+            }
+
+            if(arbiter.isCheckmate(newPosition,opponent,castleDirection)){
+                dispatch(detectCheckmate(piece[0]))
+            }
+
         
         }
         dispatch(clearCandidates())

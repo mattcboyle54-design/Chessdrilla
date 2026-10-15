@@ -1,5 +1,5 @@
 import { useAppContext } from '../../../contexts/Context'
-import { copyPosition } from '../../../helper'
+import { copyPosition, getNewMoveNotation } from '../../../helper'
 import { clearCandidates, makeNewMove } from '../../../reducer/actions/move'
 import './PromotionBox.css'
 
@@ -42,10 +42,17 @@ const PromotionBox = ({onClosePopup}) => {
         newPosition[promotionSqaure.x][promotionSqaure.y] = color + option
 
         dispatch(clearCandidates())
-        dispatch(makeNewMove({newPosition}))
         
-
+        const newMove = getNewMoveNotation({
+            ...promotionSqaure,
+            piece: color + 'p',
+            promotesTo : option,
+            position: appState.position[appState.position.length - 1]
+        })
+        dispatch(makeNewMove({newPosition,newMove}))
     }
+
+
 
     return <div className = 'popup-inner promotion-choices' style = {getPromotionBoxPosition()}>
         {options.map(option => 

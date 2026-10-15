@@ -1,3 +1,4 @@
+import { areSameColorTAiles, findPieceCoords } from "../helper"
 import { getBishopMoves, getKingMoves, getKnightMoves, getPawnCaptures, getPawnMoves, getQueenMoves, getRookMoves, getCastlingMoves, getKingPosition, getPieces, } from "./getMoves"
 import { movePawn, movePiece } from "./move"
 
@@ -116,6 +117,59 @@ const arbiter = {
         return (!isInCheck && moves.length === 0)
     
     },
+
+    insufficentMaterial: function(position) {
+
+        const pieces = position.reduce((acc,rank) =>
+            acc = [
+                ...acc,
+                ...rank.filter(x => x)
+            ], [])
+            
+            //King vs king
+            if(pieces.length === 2)
+                return true
+
+            //King and bishop vs king
+            //King and knight vs king 
+            if(pieces.length === 3 && (pieces.some(p => p.endsWith('b') || p.endsWith('n'))))
+                return true
+
+            //King and Bishop vs king and bishop where bishops are same color 
+            if(pieces.length === 4 &&
+                pieces.every(p => p.endsWith('b') || p.endsWith('k')) && 
+                new Set(pieces).size === 4 &&
+                areSameColorTAiles(
+                    findPieceCoords(position,'wb')[0],
+                    findPieceCoords(position,'bb')[0],
+                )
+            ) return true
+                
+
+        return false
+    },
+
+      isCheckmate : function (position,player,castleDirection) {
+        const isInCheck = this.isPlayerInCheck({positionAfterMove : position, player})
+        if (!isInCheck) 
+            return false 
+
+        const pieces = getPieces(position,player)
+        const moves = pieces.reduce((acc,p) => acc = [
+            ...acc,
+            ...(this.getValidMoves({
+                position,
+                castleDirection,
+                ...p
+            }))
+        ],[])
+
+        return (isInCheck && moves.length === 0)
+    
+    },
+
+
+
 }
 
   

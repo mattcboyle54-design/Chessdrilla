@@ -36,3 +36,22 @@
    margin: 0 0 1em 0;
     
 }
+
+.Wins {
+    height: var(--tile-size);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+
+.Wins.White {background-image: url('../../../assets/wK.svg');}
+.Wins.Black {background-image: url('../../../assets/bK.svg');}
+
+.draws {
+    height: var(--tile-size);
+    background-size: contain;
+    background-repeat: no-repeat no-repeat;
+    background-position: 35% center, 64% center;
+    background-image: url('../../../assets/wK.svg'), url('../../../assets/bK.svg');;
+}

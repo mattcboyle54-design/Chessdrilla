@@ -1,10 +1,10 @@
 import actionTypes from "./actionTypes"
 
 //Helper function that builds the action for the new move 
-export const makeNewMove = ({newPosition}) => {
+export const makeNewMove = ({newPosition,newMove}) => {
     return {
         type: actionTypes.NEW_MOVE,
-        payload: {newPosition}
+        payload: {newPosition,newMove}
     }
 }
 
@@ -21,3 +21,8 @@ export const clearCandidates = () => {
     }
 }
 
+export const takeBack = () => {
+    return {
+        type : actionTypes.TAKE_BACK
+    }
+}
