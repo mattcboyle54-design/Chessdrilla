@@ -1,4 +1,4 @@
-import { areSameColorTAiles, findPieceCoords } from "../helper"
+import { areSameColorTiles, findPieceCoords } from "../helper"
 import { getBishopMoves, getKingMoves, getKnightMoves, getPawnCaptures, getPawnMoves, getQueenMoves, getRookMoves, getCastlingMoves, getKingPosition, getPieces, } from "./getMoves"
 import { movePawn, movePiece } from "./move"
 
@@ -139,7 +139,7 @@ const arbiter = {
             if(pieces.length === 4 &&
                 pieces.every(p => p.endsWith('b') || p.endsWith('k')) && 
                 new Set(pieces).size === 4 &&
-                areSameColorTAiles(
+                areSameColorTiles(
                     findPieceCoords(position,'wb')[0],
                     findPieceCoords(position,'bb')[0],
                 )

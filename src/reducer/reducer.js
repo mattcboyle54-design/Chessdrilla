@@ -4,7 +4,7 @@ import { Status } from "../constant"
 export const reducer = (state, action) => {
     switch(action.type) {
         case actionTypes.NEW_MOVE: {
-            let {turn, position,movesList} = state 
+            let {turn, position, movesList, castleHistory} = state 
 
             turn = turn === 'w' ? 'b' : 'w'
 
@@ -17,12 +17,19 @@ export const reducer = (state, action) => {
                 ...movesList,
                 action.payload.newMove
             ]
+            
+            castleHistory = [
+                ...castleHistory,
+                action.payload.newCastleHistory
+            ]
+            
             //3. Return the next state from the reducer (which React will set the state to)
             return { 
                 ...state, 
                 movesList,
                 turn, 
                 position,
+                castleHistory,
             }
         }
 
@@ -36,19 +43,23 @@ export const reducer = (state, action) => {
 
         case actionTypes.TAKE_BACK: {
 
-            let {position,movesList,turn,castleHistory} = state 
+            let {position,movesList,turn,castleHistory,castleDirection} = state 
             
             if(position.length > 1) {
                 position = position.slice(0,position.length-1)
                 movesList = movesList.slice(0,position.length-1)
                 turn = turn === 'w' ? 'b' : 'w'
+                castleHistory = castleHistory.slice(0,castleHistory.length-1)
+                castleDirection = castleHistory[castleHistory.length-1]
             }
 
             return {
                 ...state,
                 position,
                 movesList,
-                turn
+                turn,
+                castleHistory,
+                castleDirection
             }
         }
 

@@ -29,10 +29,19 @@ Chess piece artwork by RhosGFX. Used under CC0 1.0 Universal
 The custom drill system and later application features are being developed independently.
 
 
+## Development Milestones
+
+
+Chess Tutorial Completed — Commit fe8c156 "Added Inssufficient material and checkmate logic. Added Chess Notation and take back feature"
+Completed the tutorial-guided chess game implementation based on Frontend-Coder's React chess tutorial.
+
+Subsequent development includes independent bug fixes, improvements to the chess engine, migration to Vite, and development of Chessdrilla's custom drill-training features.
+
+
 ## Version History
-v0.0 nothing yet
 
 
+v0.1.0 nothing yet
 
 
 ## Credits

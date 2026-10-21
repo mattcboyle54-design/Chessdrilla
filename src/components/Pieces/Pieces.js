@@ -45,9 +45,32 @@ const Pieces = () => {
             piece,rank,file
         })
         if(direction) {
+            
             dispatch(updateCastling(direction))
         }
     }
+
+      const updateCastleHistory = ({piece,rank,file}) =>{
+        const direction = getCastleDirections({
+            castleDirection : appState.castleDirection,
+            piece,rank,file
+        })
+        if(direction) {
+            dispatch(updateCastling(direction))
+            if(piece.startsWith('w')){
+                return {w: direction, b:appState.castleDirection.b}
+            }
+            else {
+                return {w: appState.castleDirection.w, b: direction}
+            }
+        }
+        else {
+            return appState.castleDirection
+        }
+    }
+
+    
+    
     const move = e => {
         const {x,y} = calculateCoords(e)
         
@@ -58,14 +81,16 @@ const Pieces = () => {
             const opponent = piece.startsWith('b') ? 'w' : 'b'
             const castleDirection = appState.castleDirection[`${piece.startsWith('b') ? 'w' : 'b'} `]
 
+            //checking for promotion
            if((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)){
             openPromotionBox({rank,file,x,y})
             return
            }
 
            if (piece.endsWith('r') || piece.endsWith('k')) {
-            updateCastlingState({piece,rank,file})
+                updateCastlingState({piece,rank,file})
            }
+           const newCastleHistory = updateCastleHistory({piece,rank,file})
             const newPosition = arbiter.performMove({
                 position : currentPosition,
                 piece,rank,file,
@@ -76,7 +101,7 @@ const Pieces = () => {
                 piece,rank,file,x,y,position: currentPosition
             })
 
-            dispatch(makeNewMove({newPosition,newMove}))
+            dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
             
 
             //Checking for end of game 

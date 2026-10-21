@@ -1,10 +1,10 @@
 import actionTypes from "./actionTypes"
 
 //Helper function that builds the action for the new move 
-export const makeNewMove = ({newPosition,newMove}) => {
+export const makeNewMove = ({newPosition,newMove,newCastleHistory}) => {
     return {
         type: actionTypes.NEW_MOVE,
-        payload: {newPosition,newMove}
+        payload: {newPosition,newMove,newCastleHistory}
     }
 }
 

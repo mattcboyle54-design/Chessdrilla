@@ -11,6 +11,9 @@ export const Status = {
 
 export const initGameState = {
     position: [createPosition()],
+    castleHistory: [{
+        w: 'both', b: 'both'
+    }],
     turn : 'w',
     movesList : [],
     candidateMoves : [],
@@ -24,7 +27,9 @@ export const initGameState = {
 
 export const createInitialGameState = () => ({
     position: [createPosition()],
-    castleHistory: [],
+    castleHistory: [{
+        w: 'both', b: 'both'
+    }],
     turn: 'w',
     movesList : [],
     candidateMoves: [],
