@@ -1,3 +1,5 @@
+import arbiter from "./arbiter/arbiter";
+
 //Creates helper function to make code look a little cleaner when converting numbers to their proper letters 
 export const getCharacter = i => String.fromCharCode(i + 96);
 
@@ -6,7 +8,7 @@ export const createPosition = () => {
 const position = new Array(8).fill('').map(x=> new Array (8).fill(''))
 
 
-/* for (let i = 0; i < 8; i++) {
+for (let i = 0; i < 8; i++) {
     position[6][i] = "bp";
     position[1][i] = "wp";
   }
@@ -28,16 +30,7 @@ const position = new Array(8).fill('').map(x=> new Array (8).fill(''))
   position[7][5] = "bb";
   position[7][6] = "bn";
   position[7][7] = "br";
- */
-
-
-
- position[0][0] = "wr";
- position[0][4] = "wk";
- position[0][7] = "wr";
- position[7][0] = "br";
- position[7][4] = "bk";
- position[7][7] = "br";
+ 
 
 return position
 };
@@ -52,48 +45,53 @@ export const copyPosition = position => {
     return newPosition
 };
 
-export const areSameColorTiles = (coords1,coords2) => 
-    (coords1.x + coords1.y) %2 === (coords2.x + coords2.y) % 2
 
 
-export const findPieceCoords = (position,type) => {
-    let results = []
-    position.forEach((rank,i) => {
-        rank.forEach((pos,j) => {
-            if(pos === type) results.push({x: i , y: j})
-        })
-    })
-    return results
-}
-
-export const getNewMoveNotation = ({piece,rank,file,x,y,position,promotesTo}) => {
+export const getNewMoveNotation = ({piece,rank,file,x,y,position,promotesTo,newPosition,opponent,castleDirection}) => {
     let note = ''
 
     rank = Number(rank)
     file = Number(file)
 
+    //Castling notation
     if(piece[1] === 'k' && Math.abs(file - y) === 2){
         if(file>y)
-            return 'O-O-O'
+            note+='O-O-O'
         else 
-            return 'O-O'
+            note+='O-O'
     }
 
-    if(piece[1] !== 'p') {
-        note+= piece[1].toUpperCase()
-        if(position[x][y]){
-            note+='x'
+    //Piece notation
+    else {
+        if(piece[1] !== 'p') {
+            note+= piece[1].toUpperCase()
+            if(position[x][y]){
+                note+='x'
+            }
         }
+        else if (rank !== x && file !== y){
+            note+= getCharacter(file+1)+'x'
+        }
+
+        note+=getCharacter(y+1) + (x+1)
+    
+        if(promotesTo)
+            note+= '=' + promotesTo.toUpperCase()
+
     }
-    else if (rank !== x && file !== y){
-        note+= getCharacter(file+1)+'x'
-    }
-
-    note+=getCharacter(y+1) + (x+1)
-
-    if(promotesTo)
-        note+= '=' + promotesTo.toUpperCase()
-
-    return note
+    //Checkmate notation 
+    if(arbiter.isCheckmate(newPosition,opponent,castleDirection))
+        note+='#'
+    else if (arbiter.isPlayerInCheck({
+        positionAfterMove: newPosition,
+        player: opponent
+       })){
+            note+= '+'
+       }
+    
+    
+    
+   return note
 }
+
 

@@ -157,6 +157,7 @@ export const getPawnCaptures = ({position,prevPosition,piece,rank,file}) => {
 
     const enemyPawn = dir === 1? 'bp' : 'wp'
     const adjacentFiles = [file-1,file+1]
+    //Enpassant logic
     if(prevPosition){
         if((dir === 1 && rank ===4) || (dir === -1 && rank ===3)) {
             adjacentFiles.forEach(f => {
@@ -264,29 +265,35 @@ export const getCastleDirections = ({castleDirection,piece,rank,file}) => {
     const direction = castleDirection[piece[0]];
     if(piece.endsWith('k'))
         return 'none'
-    if(file === 0 && rank === 0) {
-        if (direction === 'both')
-            return 'right'
-        if (direction === 'left')
-            return 'none'
+
+    if(piece.startsWith('w')) {
+        if(file === 0 && rank === 0) {
+            if (direction === 'both')
+                return 'right'
+            if (direction === 'left')
+                return 'none'
+        }
+        if(file === 7 && rank === 0) {
+            if (direction === 'both')
+                return 'left'
+            if (direction === 'right')
+                return 'none'
+        }
     }
-    if(file === 7 && rank === 0) {
-        if (direction === 'both')
-            return 'left'
-        if (direction === 'right')
-            return 'none'
-    }
-    if(file === 0 && rank === 7) {
-        if (direction === 'both')
-            return 'right'
-        if (direction === 'left')
-            return 'none'
-    }
-    if(file === 7 && rank === 7) {
-        if (direction === 'both')
-            return 'left'
-        if (direction === 'right')
-            return 'none'
+
+    if (piece.startsWith('b')) {
+        if(file === 0 && rank === 7) {
+            if (direction === 'both')
+                return 'right'
+            if (direction === 'left')
+                return 'none'
+        }
+        if(file === 7 && rank === 7) {
+            if (direction === 'both')
+                return 'left'
+            if (direction === 'right')
+                return 'none'
+        }
     }
 }
 

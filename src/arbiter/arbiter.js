@@ -1,4 +1,4 @@
-import { areSameColorTiles, findPieceCoords } from "../helper"
+import { areSameColorTiles, findPieceCoords } from "./aribterHelper"
 import { getBishopMoves, getKingMoves, getKnightMoves, getPawnCaptures, getPawnMoves, getQueenMoves, getRookMoves, getCastlingMoves, getKingPosition, getPieces, } from "./getMoves"
 import { movePawn, movePiece } from "./move"
 

@@ -7,28 +7,30 @@ const PromotionBox = ({onClosePopup}) => {
     const options = ['q','r','b','n']
 
     const {appState,dispatch} = useAppContext()
-    const {promotionSqaure} = appState
+    const {promotionSquare,turn} = appState
 
-    if(!promotionSqaure) 
+    if(!promotionSquare)  {
+        console.log('Promotion square:', promotionSquare)
+        console.log('Game status:', appState.status)
         return null
-
-    const color = promotionSqaure.x === 7 ? 'w' : 'b'
+    }
+    const color = promotionSquare.x === 7 ? 'w' : 'b'
 
     const getPromotionBoxPosition = () => {
         const style = {}
 
-        if(promotionSqaure.x===7) 
+        if(promotionSquare.x===7) 
             style.top = '-12.5%'
         else
             style.top = '97.5%'
 
 
-        if(promotionSqaure.y <= 1) 
+        if(promotionSquare.y <= 1) 
             style.left = '0%'
-        else if(promotionSqaure.y >= 6)
+        else if(promotionSquare.y >= 6)
             style.right = '0%'
         else  
-            style.left = `${12.5 * promotionSqaure.y - 20}%`
+            style.left = `${12.5 * promotionSquare.y - 20}%`
     
         return style
     }
@@ -38,16 +40,22 @@ const PromotionBox = ({onClosePopup}) => {
         
         const newPosition = copyPosition(appState.position[appState.position.length-1])
 
-        newPosition[promotionSqaure.rank][promotionSqaure.file] = ''
-        newPosition[promotionSqaure.x][promotionSqaure.y] = color + option
-
+        newPosition[promotionSquare.rank][promotionSquare.file] = ''
+        newPosition[promotionSquare.x][promotionSquare.y] = color + option
         dispatch(clearCandidates())
+
+
+        const castleDirection = appState.castleDirection[`${turn === 'b' ? 'w' : 'b'}`]
         
+
         const newMove = getNewMoveNotation({
-            ...promotionSqaure,
+            ...promotionSquare,
             piece: color + 'p',
             promotesTo : option,
-            position: appState.position[appState.position.length - 1]
+            position: appState.position[appState.position.length - 1],
+            newPosition,
+            opponent: turn === 'w'? 'b': 'w',
+            castleDirection,
         })
         dispatch(makeNewMove({newPosition,newMove}))
     }

@@ -74,7 +74,7 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 status : Status.promoting,
-                promotionSqaure: {...action.payload},
+                promotionSquare: {...action.payload},
             }
         }
 
