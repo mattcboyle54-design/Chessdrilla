@@ -259,43 +259,83 @@ export const getCastlingMoves = ({position,castleDirection,piece,rank,file}) => 
     return moves
 }
 
-export const getCastleDirections = ({castleDirection,piece,rank,file}) => {
+export const getCastleDirections = ({castleDirection,piece,rank,file,x,y}) => {
     rank = Number(rank)
     file = Number(file)
-    const direction = castleDirection[piece[0]];
+    let direction = castleDirection[piece[0]];
+    let opponentDirection = castleDirection[piece[0]==='w'? 'b': 'w']
+
+    //Checks for king movement 
     if(piece.endsWith('k'))
-        return 'none'
+        direction = 'none'
+    
+    //Checks for rook movement 
+    if(piece.endsWith('r')) {
+        if(piece.startsWith('b')) {
+            if(file === 0 && rank === 0) {
+                if (direction === 'both')
+                    direction = 'right'
+                if (direction === 'left')
+                    direction = 'none'
+            }
+            if(file === 7 && rank === 0) {
+                if (direction === 'both')
+                    direction = 'left'
+                if (direction === 'right')
+                    direction = 'none'
+            }
+        }
 
+        else if (piece.startsWith('w')) {
+            if(file === 0 && rank === 7) {
+                if (direction === 'both')
+                    direction = 'right'
+                if (direction === 'left')
+                    direction = 'none'
+            }
+            if(file === 7 && rank === 7) {
+                if (direction === 'both')
+                    direction = 'left'
+                if (direction === 'right')
+                    direction = 'none'
+            }
+        }
+    }
+    //Check for the rest of the pieces
+    if(piece.startsWith('b')) {
+        if(y === 0 && x === 0) {
+            if (opponentDirection === 'both')
+                opponentDirection ='right'
+            if (opponentDirection === 'left')
+                opponentDirection = 'none'
+        }
+        if(y === 7 && x === 0) {
+            if (opponentDirection === 'both')
+                opponentDirection = 'left'
+            if (opponentDirection === 'right')
+                opponentDirection = 'none'
+        }
+    }
     if(piece.startsWith('w')) {
-        if(file === 0 && rank === 0) {
-            if (direction === 'both')
-                return 'right'
-            if (direction === 'left')
-                return 'none'
+        if(y === 0 && x === 7) {
+             console.log("valid2")
+            if (opponentDirection === 'both')
+                opponentDirection = 'right'
+            if (opponentDirection === 'left')
+                opponentDirection = 'none'
         }
-        if(file === 7 && rank === 0) {
-            if (direction === 'both')
-                return 'left'
-            if (direction === 'right')
-                return 'none'
-        }
-    }
-
-    if (piece.startsWith('b')) {
-        if(file === 0 && rank === 7) {
-            if (direction === 'both')
-                return 'right'
-            if (direction === 'left')
-                return 'none'
-        }
-        if(file === 7 && rank === 7) {
-            if (direction === 'both')
-                return 'left'
-            if (direction === 'right')
-                return 'none'
+        if(y === 7 && x === 7) {
+            if (opponentDirection === 'both')
+                opponentDirection = 'left'
+            if (opponentDirection === 'right')
+                opponentDirection = 'none'
+        
         }
     }
+    return piece[0] === 'w' ? {w: direction, b: opponentDirection} : {w: opponentDirection, b: direction}
+   
 }
+
 
 export const getKingPosition = (position,player) => {
     let kingPos

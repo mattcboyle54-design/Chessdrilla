@@ -31,41 +31,27 @@ const Pieces = () => {
         return {x,y}
     }
     
-    const openPromotionBox = ({rank,file,x,y})  => 
+    const openPromotionBox = ({piece,rank,file,x,y})  => 
         dispatch(openPromotion({
+            piece,
             rank : Number(rank),
             file : Number(file),
             x,
             y,
         }))
     
-    const updateCastlingState = ({piece,rank,file}) =>{
-        const direction = getCastleDirections({
-            castleDirection : appState.castleDirection,
-            piece,rank,file
-        })
-        if(direction) {
-            
-            dispatch(updateCastling(direction))
-        }
-    }
 
-      const updateCastleHistory = ({piece,rank,file}) =>{
-        const direction = getCastleDirections({
+    const updateCastleHistory = ({piece,rank,file,x,y}) =>{
+        const castleDirection = getCastleDirections({
             castleDirection : appState.castleDirection,
-            piece,rank,file
+            piece,rank,file,
+            x,y,
         })
-        if(direction) {
-            dispatch(updateCastling(direction))
-            if(piece.startsWith('w')){
-                return {w: direction, b:appState.castleDirection.b}
-            }
-            else {
-                return {w: appState.castleDirection.w, b: direction}
-            }
+        if(castleDirection) {
+            return castleDirection
         }
         else {
-            return appState.castleDirection
+            return
         }
     }
 
@@ -83,14 +69,14 @@ const Pieces = () => {
 
             //checking for promotion
            if((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)){
-            openPromotionBox({rank,file,x,y})
+            openPromotionBox({piece,rank,file,x,y})
             return
            }
 
-           if (piece.endsWith('r') || piece.endsWith('k')) {
-                updateCastlingState({piece,rank,file})
-           }
-           const newCastleHistory = updateCastleHistory({piece,rank,file})
+
+           const newCastleHistory = updateCastleHistory({piece,rank,file,x,y})
+           dispatch(updateCastling(newCastleHistory))
+
             const newPosition = arbiter.performMove({
                 position : currentPosition,
                 piece,rank,file,
@@ -115,7 +101,7 @@ const Pieces = () => {
             } else if (arbiter.isStalemate(newPosition,opponent,castleDirection)){
                 dispatch(detectStalemate()) 
             }
-
+            
             if(arbiter.isCheckmate(newPosition,opponent,castleDirection)){
                 dispatch(detectCheckmate(piece[0]))
             }
@@ -158,4 +144,5 @@ const Pieces = () => {
          ))}
     </div>
 }
+
 export default Pieces

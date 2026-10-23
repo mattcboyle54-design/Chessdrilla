@@ -17,7 +17,6 @@ export const reducer = (state, action) => {
                 ...movesList,
                 action.payload.newMove
             ]
-            
             castleHistory = [
                 ...castleHistory,
                 action.payload.newCastleHistory
@@ -87,15 +86,17 @@ export const reducer = (state, action) => {
             }
         }
           case actionTypes.CAN_CASTLE: {
-            const {turn , castleDirection,} = state
-
-            return {
-                ...state,
-                castleDirection: {
-                    ...castleDirection,
-                    [turn]: action.payload
-                }
-            }
+            const {castleDirection} = state
+                    return {
+                        ...state,
+                        castleDirection: {
+                            ...castleDirection,
+                            ...action.payload.newCastleHistory,
+                            
+                        }
+                    }
+                
+            
         }
 
          case actionTypes.STALEMATE: {

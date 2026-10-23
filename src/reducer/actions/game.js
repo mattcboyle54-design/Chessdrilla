@@ -1,9 +1,9 @@
 import actionTypes from "./actionTypes"
 
-export const updateCastling = direction => {
+export const updateCastling = (newCastleHistory) => {
     return {
         type: actionTypes.CAN_CASTLE,
-        payload: direction,
+        payload: {newCastleHistory},
     }
 }
 

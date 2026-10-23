@@ -11,3 +11,4 @@ export const findPieceCoords = (position,type) => {
     })
     return results
 }
+

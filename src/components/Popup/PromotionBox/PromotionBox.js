@@ -1,5 +1,8 @@
+import arbiter from '../../../arbiter/arbiter'
+import { getCastleDirections } from '../../../arbiter/getMoves'
 import { useAppContext } from '../../../contexts/Context'
 import { copyPosition, getNewMoveNotation } from '../../../helper'
+import { detectCheckmate, detectInsufficentMaterial, detectStalemate, updateCastling } from '../../../reducer/actions/game'
 import { clearCandidates, makeNewMove } from '../../../reducer/actions/move'
 import './PromotionBox.css'
 
@@ -10,12 +13,24 @@ const PromotionBox = ({onClosePopup}) => {
     const {promotionSquare,turn} = appState
 
     if(!promotionSquare)  {
-        console.log('Promotion square:', promotionSquare)
-        console.log('Game status:', appState.status)
         return null
     }
     const color = promotionSquare.x === 7 ? 'w' : 'b'
 
+
+    const updateCastleHistory = ({piece,rank,file,x,y}) =>{
+        const castleDirection = getCastleDirections({
+            castleDirection : appState.castleDirection,
+            piece,rank,file,
+            x,y,
+        })
+        if(castleDirection) {
+            return castleDirection
+        }
+        else {
+            return
+        }
+    }
     const getPromotionBoxPosition = () => {
         const style = {}
 
@@ -33,6 +48,8 @@ const PromotionBox = ({onClosePopup}) => {
             style.left = `${12.5 * promotionSquare.y - 20}%`
     
         return style
+
+    
     }
 
     const onClick = option => {
@@ -46,18 +63,38 @@ const PromotionBox = ({onClosePopup}) => {
 
 
         const castleDirection = appState.castleDirection[`${turn === 'b' ? 'w' : 'b'}`]
+        const opponent = turn === 'w'? 'b': 'w'
         
-
+        const newCastleHistory = updateCastleHistory({piece : promotionSquare.piece, x: promotionSquare.x, y: promotionSquare.y})
+        dispatch(updateCastling(newCastleHistory))
         const newMove = getNewMoveNotation({
             ...promotionSquare,
             piece: color + 'p',
             promotesTo : option,
             position: appState.position[appState.position.length - 1],
             newPosition,
-            opponent: turn === 'w'? 'b': 'w',
+            opponent,
             castleDirection,
         })
-        dispatch(makeNewMove({newPosition,newMove}))
+
+
+        dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
+         
+
+        if(arbiter.isCheckmate(newPosition,opponent,castleDirection)){
+            dispatch(detectCheckmate(turn))
+        }
+
+        else if(arbiter.isStalemate(newPosition,opponent,castleDirection)){
+                dispatch(detectStalemate())
+            }
+            
+        else if(arbiter.insufficentMaterial(newPosition)){
+            dispatch(detectInsufficentMaterial())
+            } else if (arbiter.isStalemate(newPosition,opponent,castleDirection)){
+                dispatch(detectStalemate()) 
+            }
+       
     }
 
 
