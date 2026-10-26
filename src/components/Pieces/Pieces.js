@@ -21,6 +21,7 @@ const Pieces = () => {
 
     //Context access that pulls the shared game state by pulling the last board snapshot in the array
     const currentPosition = appState.position[appState.position.length-1]
+    const prevPosition = appState.position[appState.position.length-2]
 
     //Takes the mouse position in relation to screen and figures out which chess sqaure the mouse is over. Return it in the form of x,y (rank and file) 
     const calculateCoords = e => {
@@ -84,7 +85,8 @@ const Pieces = () => {
             })
 
             const newMove = getNewMoveNotation({
-                piece,rank,file,x,y,position: currentPosition,
+                piece,rank,file,x,y,
+                position: currentPosition, prevPosition,
                 newPosition,opponent,castleDirection,
             })
 

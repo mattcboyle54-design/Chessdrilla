@@ -285,7 +285,6 @@ export const getCastleDirections = ({castleDirection,piece,rank,file,x,y}) => {
                     direction = 'none'
             }
         }
-
         else if (piece.startsWith('w')) {
             if(file === 0 && rank === 7) {
                 if (direction === 'both')
@@ -318,7 +317,6 @@ export const getCastleDirections = ({castleDirection,piece,rank,file,x,y}) => {
     }
     if(piece.startsWith('w')) {
         if(y === 0 && x === 7) {
-             console.log("valid2")
             if (opponentDirection === 'both')
                 opponentDirection = 'right'
             if (opponentDirection === 'left')

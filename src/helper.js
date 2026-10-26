@@ -30,7 +30,6 @@ for (let i = 0; i < 8; i++) {
   position[7][5] = "bb";
   position[7][6] = "bn";
   position[7][7] = "br";
- 
 
 return position
 };
@@ -47,9 +46,8 @@ export const copyPosition = position => {
 
 
 
-export const getNewMoveNotation = ({piece,rank,file,x,y,position,promotesTo,newPosition,opponent,castleDirection}) => {
+export const getNewMoveNotation = ({piece,rank,file,x,y,position,prevPosition,promotesTo,newPosition,opponent,castleDirection}) => {
     let note = ''
-
     rank = Number(rank)
     file = Number(file)
 
@@ -60,11 +58,21 @@ export const getNewMoveNotation = ({piece,rank,file,x,y,position,promotesTo,newP
         else 
             note+='O-O'
     }
-
     //Piece notation
     else {
-        if(piece[1] !== 'p') {
+
+        if(piece[1] !== 'p') {   
             note+= piece[1].toUpperCase()
+
+            if(piece[1] !== 'k') {
+                const [rowCheck,fileCheck,hasCompetitor] = checkDisambigousMoves({piece,rank,file,x,y,position,prevPosition,castleDirection})
+                if(hasCompetitor) {
+                    if(fileCheck===false) note+= getCharacter(file+1)
+                    else if(!rowCheck) note+= (rank+1)
+                    else note+= (rank+1) +getCharacter(file+1)
+                }
+            }
+
             if(position[x][y]){
                 note+='x'
             }
@@ -82,12 +90,12 @@ export const getNewMoveNotation = ({piece,rank,file,x,y,position,promotesTo,newP
     //Checkmate notation 
     if(arbiter.isCheckmate(newPosition,opponent,castleDirection))
         note+='#'
+
     else if (arbiter.isPlayerInCheck({
         positionAfterMove: newPosition,
         player: opponent
-       })){
-            note+= '+'
-       }
+       }))note+= '+'
+    
     
     
     
@@ -95,3 +103,55 @@ export const getNewMoveNotation = ({piece,rank,file,x,y,position,promotesTo,newP
 }
 
 
+const checkDisambigousMoves = ({piece,rank,file,x,y,position,prevPosition,castleDirection}) => {
+
+    let hasCompetitor = false 
+
+     const rowCheck = position.some((row,i) => {
+          return row.some((p,j) => {
+            if(position[i][j] === piece && !(i=== rank && j=== file)) {
+                const candidateMoves = 
+                    arbiter.getValidMoves({
+                        position : position,
+                        prevPosition : prevPosition,
+                        castleDirection,
+                        piece : p,
+                        rank : i,
+                        file : j, 
+                    })
+                return candidateMoves.some(([first,second]) => {
+                    if(first === x && second === y) {
+                        hasCompetitor = true
+                        return i === rank
+                    }
+                    else return false; 
+                })
+            }
+            else return false
+            
+        })
+          
+        })
+     const fileCheck = position.some((row,i) => {
+          return row.some((p,j) => {
+            if(position[i][j] === piece && !(i=== rank && j=== file)) {
+                const candidateMoves = 
+                    arbiter.getValidMoves({
+                        position : position,
+                        prevPosition : prevPosition,
+                        castleDirection,
+                        piece : p,
+                        rank : i,
+                        file : j, 
+                    })
+                return candidateMoves.some(([first,second]) => {
+                    return (first === x && second ===y) && j === file
+                })
+            }
+            else return false
+        })
+          
+        })
+    
+    return [rowCheck,fileCheck,hasCompetitor]
+} 
