@@ -10,6 +10,9 @@ import { openPromotion } from '../../reducer/actions/popup'
 import { getCastleDirections } from '../../arbiter/getMoves'
 import { detectCheckmate, detectInsufficentMaterial, detectStalemate, updateCastling } from '../../reducer/actions/game'
 import { getNewMoveNotation } from '../../helper'
+import { GameMode, Status } from '../../constant'
+import { makeNewDrillMove } from '../../reducer/actions/drill'
+import { makeDrillNotation } from '../../drillManager/drillManager'
 
 
 
@@ -104,10 +107,52 @@ const Pieces = () => {
                 dispatch(detectStalemate()) 
             }
             
+            
             if(arbiter.isCheckmate(newPosition,opponent,castleDirection)){
                 dispatch(detectCheckmate(piece[0]))
             }
 
+            
+        }
+        dispatch(clearCandidates())
+    }
+
+    const makeDrill = e => {
+        const {x,y} = calculateCoords(e)
+
+        const [piece,rank,file] = e.dataTransfer.getData("text").split(',')
+
+        if(appState.candidateMoves?.find(m => m[0] === x && m[1] === y)){
+
+            const opponent = piece.startsWith('b') ? 'w' : 'b'
+            const castleDirection = appState.castleDirection[`${piece.startsWith('b') ? 'w' : 'b'}`]
+
+            //checking for promotion
+           if((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)){
+            openPromotionBox({piece,rank,file,x,y})
+            return
+           }
+
+
+           const newCastleHistory = updateCastleHistory({piece,rank,file,x,y})
+           dispatch(updateCastling(newCastleHistory))
+
+            const newPosition = arbiter.performMove({
+                position : currentPosition,
+                piece,rank,file,
+                x,y
+            })
+
+            const newMove = getNewMoveNotation({
+                piece,rank,file,x,y,
+                position: currentPosition, prevPosition,
+                newPosition,opponent,castleDirection,
+            })
+
+            dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
+            
+            dispatch(makeNewDrillMove(makeDrillNotation({rank,file,x,y})))
+            
         
         }
         dispatch(clearCandidates())
@@ -116,7 +161,12 @@ const Pieces = () => {
     const onDrop = e => {
         e.preventDefault()
 
-        move (e)
+        if(appState.gameMode === GameMode.drill)
+            makeDrill (e)
+
+        else {
+            move (e)
+        }
 
         
     }
@@ -126,7 +176,6 @@ const Pieces = () => {
         e.preventDefault()
     }
 
-    
     return <div 
         ref = {ref}
         onDrop = {onDrop}

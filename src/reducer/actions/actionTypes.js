@@ -10,5 +10,10 @@ const actionTypes = {
     "INSUFFICENT_MATERIAL" : "INSUFFICENT_MATERIAL",
     "WIN" : "WIN",
     "TAKE_BACK": "TAKE_BACK",
+    "DRILL_MODE": "DRILL_MODE",
+    "NEW_DRILL_MOVE": "NEW_DRILL_MOVE",
+    "OPEN_SAVE": "OPEN_SAVE",
+    "CLOSE_SAVE": "CLOSE_SAVE",
+    "SAVE_DRILL": 'SAVE_DRILL',
 }
 export default actionTypes

@@ -1,16 +1,19 @@
 import arbiter from '../../../arbiter/arbiter'
 import { getCastleDirections } from '../../../arbiter/getMoves'
 import { useAppContext } from '../../../contexts/Context'
+import { makeDrillNotation } from '../../../drillManager/drillManager'
 import { copyPosition, getNewMoveNotation } from '../../../helper'
+import { makeNewDrillMove } from '../../../reducer/actions/drill'
 import { detectCheckmate, detectInsufficentMaterial, detectStalemate, updateCastling } from '../../../reducer/actions/game'
 import { clearCandidates, makeNewMove } from '../../../reducer/actions/move'
 import './PromotionBox.css'
 
 const PromotionBox = ({onClosePopup}) => {
+    
     const options = ['q','r','b','n']
 
     const {appState,dispatch} = useAppContext()
-    const {promotionSquare,turn} = appState
+    const {promotionSquare,turn,gameMode} = appState
 
     if(!promotionSquare)  {
         return null
@@ -76,7 +79,15 @@ const PromotionBox = ({onClosePopup}) => {
             opponent,
             castleDirection,
         })
-
+        if(gameMode === 'DrillMode'){
+            dispatch(makeNewDrillMove(makeDrillNotation({
+                rank: promotionSquare.rank,
+                file: promotionSquare.file,
+                x: promotionSquare.x, 
+                y:promotionSquare.y,
+                promotesTo:option,
+            })))
+        }
 
         dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
          
@@ -96,6 +107,7 @@ const PromotionBox = ({onClosePopup}) => {
             }
        
     }
+
 
 
 

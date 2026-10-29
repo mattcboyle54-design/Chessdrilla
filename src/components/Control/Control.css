@@ -4,4 +4,6 @@
     padding: 10px; 
     text-align: center; 
     height: calc(8*var(--tile-size));
+
 }
+

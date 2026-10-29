@@ -41,7 +41,7 @@ Subsequent development includes independent bug fixes, improvements to the chess
 ## Version History
 
 
-v0.1.0 nothing yet
+v0.1.0 Playabble chess game 
 
 
 ## Credits

@@ -1,8 +1,10 @@
 import actionTypes from "./actions/actionTypes"
-import { Status } from "../constant"
+import { GameMode, Status } from "../constant"
 
 export const reducer = (state, action) => {
     switch(action.type) {
+
+        //Game Logic 
         case actionTypes.NEW_MOVE: {
             let {turn, position, movesList, castleHistory} = state 
 
@@ -22,7 +24,6 @@ export const reducer = (state, action) => {
                 action.payload.newCastleHistory
             ]
             
-            //3. Return the next state from the reducer (which React will set the state to)
             return { 
                 ...state, 
                 movesList,
@@ -42,7 +43,7 @@ export const reducer = (state, action) => {
 
         case actionTypes.TAKE_BACK: {
 
-            let {position,movesList,turn,castleHistory,castleDirection} = state 
+            let {position,movesList,turn,castleHistory,castleDirection,drillMoves,gameMode} = state 
             
             if(position.length > 1) {
                 position = position.slice(0,position.length-1)
@@ -50,6 +51,10 @@ export const reducer = (state, action) => {
                 turn = turn === 'w' ? 'b' : 'w'
                 castleHistory = castleHistory.slice(0,castleHistory.length-1)
                 castleDirection = castleHistory[castleHistory.length-1]
+                if(gameMode === GameMode.drill) {
+                    drillMoves = drillMoves.slice(0,drillMoves.length-1)
+                }
+                
             }
 
             return {
@@ -58,7 +63,8 @@ export const reducer = (state, action) => {
                 movesList,
                 turn,
                 castleHistory,
-                castleDirection
+                castleDirection,
+                drillMoves
             }
         }
 
@@ -99,6 +105,9 @@ export const reducer = (state, action) => {
             
         }
 
+
+        
+        //End of game 
          case actionTypes.STALEMATE: {
             return {
                 ...state,
@@ -107,8 +116,12 @@ export const reducer = (state, action) => {
         }
 
          case actionTypes.NEW_GAME: {
+            let {drills} = state
+            
             return {
-                ...action.payload
+                ...action.payload,
+                gameMode: GameMode.analysis,
+                ...drills
             }
          }
 
@@ -123,6 +136,63 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 status: action.payload === 'w' ? Status.white : Status.black
+            }
+         }
+
+
+
+         //Drill section 
+         case actionTypes.DRILL_MODE: {
+            return {
+                ...state,
+                gameMode: GameMode.drill,
+                status: Status.ongoing,
+                drillMoves: [],
+            }
+         }
+
+         case actionTypes.NEW_DRILL_MOVE: {
+            if(state.gameMode!== GameMode.drill) {
+                throw new Error("Cannot record drill moves outside drill mode")
+            }
+            let {drillMoves} = state 
+            drillMoves = [
+                ...drillMoves,
+                action.payload
+            ]
+
+            return {
+                ...state,
+                drillMoves
+            }
+         }
+
+         case actionTypes.OPEN_SAVE: {
+            return {
+                ...state,
+                status: Status.saving
+            }
+         }
+         
+         case actionTypes.CLOSE_SAVE: {
+            return {
+                ...state,
+                status: Status.ongoing
+            }
+         }
+
+         case actionTypes.SAVE_DRILL: {
+        
+            let {drills} = state
+
+            drills = [
+                ...drills,
+                action.payload
+            ]
+        
+            return{
+                ...state,
+                drills
             }
          }
         default: 

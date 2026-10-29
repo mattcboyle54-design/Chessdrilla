@@ -37,6 +37,7 @@ const arbiter = {
     },
 
     getValidMoves : function ({position,castleDirection,prevPosition,piece,rank,file}) {
+ 
         let moves = this.getRegularMoves({position,piece,rank,file})
         const notInCheckMoves = []
 
@@ -56,6 +57,7 @@ const arbiter = {
         }
         
         moves.forEach(([x,y]) => {
+    
             const positionAfterMove = this.performMove({position,piece,rank,file,x,y})
 
             if(!this.isPlayerInCheck({positionAfterMove,position,player: piece[0]})){
@@ -67,6 +69,7 @@ const arbiter = {
     },
 
     performMove : function ({position,piece,rank,file,x,y}) {
+
         if(piece.endsWith('p')){
             return movePawn({position,piece,rank,file,x,y})
         }
@@ -163,7 +166,6 @@ const arbiter = {
                 ...p
             }))
         ],[])
-
         return (isInCheck && moves.length === 0)
     
     },

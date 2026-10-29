@@ -7,7 +7,7 @@ import './GameEnds.css'
 const GameEnds = ({onClosePopup}) => {
     const {appState : {status}, dispatch} = useAppContext();
 
-    if(status === Status.ongoing || status === Status.promoting) {
+    if(!(status.endsWith('Wins') || status.endsWith('stalemate') || status.endsWith('material'))) {
         return null
     }
 
@@ -16,7 +16,6 @@ const GameEnds = ({onClosePopup}) => {
     const newGame = () =>{
         dispatch(setupNewGame(createInitialGameState()))
     }
-
 
 
     return <div className = 'popup--inner popup--inner_center '>
@@ -28,3 +27,5 @@ const GameEnds = ({onClosePopup}) => {
 }
 
 export default GameEnds
+
+

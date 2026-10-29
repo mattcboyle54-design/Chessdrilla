@@ -65,10 +65,10 @@ export const getNewMoveNotation = ({piece,rank,file,x,y,position,prevPosition,pr
             note+= piece[1].toUpperCase()
 
             if(piece[1] !== 'k') {
-                const [rowCheck,fileCheck,hasCompetitor] = checkDisambigousMoves({piece,rank,file,x,y,position,prevPosition,castleDirection})
+                const [rankCheck,fileCheck,hasCompetitor] = checkDisambigousMoves({piece,rank,file,x,y,position,prevPosition,castleDirection})
                 if(hasCompetitor) {
                     if(fileCheck===false) note+= getCharacter(file+1)
-                    else if(!rowCheck) note+= (rank+1)
+                    else if(!rankCheck) note+= (rank+1)
                     else note+= (rank+1) +getCharacter(file+1)
                 }
             }
@@ -106,52 +106,35 @@ export const getNewMoveNotation = ({piece,rank,file,x,y,position,prevPosition,pr
 const checkDisambigousMoves = ({piece,rank,file,x,y,position,prevPosition,castleDirection}) => {
 
     let hasCompetitor = false 
-
-     const rowCheck = position.some((row,i) => {
-          return row.some((p,j) => {
-            if(position[i][j] === piece && !(i=== rank && j=== file)) {
-                const candidateMoves = 
-                    arbiter.getValidMoves({
-                        position : position,
-                        prevPosition : prevPosition,
-                        castleDirection,
-                        piece : p,
-                        rank : i,
-                        file : j, 
-                    })
-                return candidateMoves.some(([first,second]) => {
-                    if(first === x && second === y) {
-                        hasCompetitor = true
-                        return i === rank
-                    }
-                    else return false; 
-                })
-            }
-            else return false
-            
-        })
-          
-        })
-     const fileCheck = position.some((row,i) => {
-          return row.some((p,j) => {
-            if(position[i][j] === piece && !(i=== rank && j=== file)) {
-                const candidateMoves = 
-                    arbiter.getValidMoves({
-                        position : position,
-                        prevPosition : prevPosition,
-                        castleDirection,
-                        piece : p,
-                        rank : i,
-                        file : j, 
-                    })
-                return candidateMoves.some(([first,second]) => {
-                    return (first === x && second ===y) && j === file
-                })
-            }
-            else return false
-        })
-          
-        })
+    let rankCheck = false
+    let fileCheck = false
     
-    return [rowCheck,fileCheck,hasCompetitor]
-} 
+    for (let i=0; i<position.length; i++){
+        for(let j=0; j<position[i].length; j++){
+            if(position[i][j] === piece && !(i==rank && j===file)) {
+                const candidateMoves = arbiter.getValidMoves({
+                    position : position,
+                    prevPosition : prevPosition,
+                    castleDirection,
+                    piece : piece,
+                    rank : i,
+                    file : j, 
+                })
+            
+                const canReach = candidateMoves.some(([first,second]) => {
+                    return (first === x && second === y)
+                })
+
+                if(canReach){
+                    hasCompetitor = true;
+                    if(i === rank) rankCheck = true;
+                    if(j === file) fileCheck = true;
+                }   
+            }
+        }
+    }
+
+    return [rankCheck,fileCheck,hasCompetitor]
+}
+
+

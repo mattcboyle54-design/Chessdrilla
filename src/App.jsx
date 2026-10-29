@@ -8,6 +8,7 @@ import { initGameState } from './constant';
 import Control from './components/Control/Control';
 import MovesList from './components/Control/bits/MovesList';
 import TakeBack from './components/Control/bits/TakeBack';
+import SaveDrill from './components/Control/bits/SaveDrill';
 
 function App() {
 
@@ -24,7 +25,9 @@ function App() {
          <Board/>
          <Control>
             <MovesList />
+            <SaveDrill />
             <TakeBack />
+            
          </Control>
       </div>
     </AppContext.Provider>

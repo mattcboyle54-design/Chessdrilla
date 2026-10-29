@@ -7,9 +7,19 @@ export const Status = {
     'white' : 'White Wins',
     'stalemate' : 'Game draws due to stalemate',
     'insufficient' : 'Game draws due to insufficent material',
+    'saving': "Saving",
+    'start': 'Start',
+}
+
+export const GameMode = {
+    'start' : 'Start',
+    'drill': 'DrillMode',
+    'analysis': 'AnalysisMode',
+    'PlayDrill': 'PlayDrill',
 }
 
 export const initGameState = {
+    //game logic related 
     position: [createPosition()],
     castleHistory: [{
         w: 'both', b: 'both'
@@ -17,12 +27,19 @@ export const initGameState = {
     turn : 'w',
     movesList : [],
     candidateMoves : [],
-    status : Status.ongoing,
     promotionSquare: null,
     castleDirection : {
         w: 'both',
         b: 'both',
     },
+
+    //Gamemode and Gamestate management 
+    status : Status.start,
+    gameMode: GameMode.start,
+
+    //Drill management 
+    drillMoves: [],
+    drills: [],
 } 
 
 export const createInitialGameState = () => ({
@@ -39,6 +56,5 @@ export const createInitialGameState = () => ({
     },
     status: Status.ongoing,
     promotionSquare: null,
-    
 
 })

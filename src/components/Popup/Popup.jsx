@@ -17,6 +17,7 @@ const Popup = ({children}) => {
     if (status === Status.ongoing)
         return null
 
+    
     return <div className="popup">
         {React.Children
             .toArray(children)

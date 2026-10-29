@@ -8,6 +8,8 @@ import arbiter from '../../arbiter/arbiter'
 import { getKingPosition } from '../../arbiter/getMoves'
 import PromotionBox from '../Popup/PromotionBox/PromotionBox'
 import GameEnds from '../Popup/GameEnds/GameEnds'
+import StartMenu from '../Popup/StartMenu/StartMenu'
+import MakeDrill from '../Popup/MakeDrill/MakeDrill'
 //Create a board from ranks and tiles using nested maps. Ranks are 8-1 and tiles are a-h. Each square is a div with the rank and tile as text.
 const Board = () => {
        //Creates an empty array that map uses to fill a new array ranks a tiles. String allows tiles to based as their proper letters 
@@ -67,6 +69,8 @@ const Board = () => {
        <Popup>
             <PromotionBox />
             <GameEnds />
+            <StartMenu />
+            <MakeDrill />
        </Popup>
 
        <Files files = {tiles}/>
