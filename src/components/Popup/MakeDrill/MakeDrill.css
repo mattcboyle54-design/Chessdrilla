@@ -1,1 +1,22 @@
 
+.make-drill-popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px
+}
+
+.make-drill-label {
+    display: flex;
+    margin-top: 12px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.make-drill-buttons {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 10px
+}

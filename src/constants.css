@@ -4,7 +4,9 @@
     --light-tile: #f0d9b5;
     --dark-tile: #b58863;
     --bg-color : #202020;
-    --highlight : #FEEC48,
+    --highlight : #FEEC48;
+    --hover-color: #808080;
+
 }
 
 /* Shrinks the board on smaller screens */

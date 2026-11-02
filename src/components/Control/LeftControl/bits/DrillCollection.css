@@ -1,0 +1,53 @@
+.drill-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    color: var(--dark-tile);
+    overflow-y: auto;
+    gap: 5px;
+}
+
+
+.drill-list button {
+    background: transparent;
+    color: var(--dark-tile);
+    border: none;
+    padding: 0px 5px; 
+    font-size: 1em;
+    margin: 5px 0; 
+    
+    box-sizing: border-box;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.drill-list button:hover {
+    background-color: var(--hover-color);
+}
+
+.drill-list button.selected {
+    background-color: var(--hover-color);
+}
+
+
+.moves-list{
+    display: flex;
+    flex-direction: row;
+    color: var(--dark-tile);
+    flex: 1 1;
+    flex-wrap: wrap;
+    align-content: start;
+    overflow: auto;
+    font-size: 1.1em;
+}
+
+.moves-list div{
+    flex-basis: 35%;
+    padding-left: 15%;
+    text-align: left;
+    position: relative;
+    padding-bottom: 5px;
+
+}

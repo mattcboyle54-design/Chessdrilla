@@ -1,6 +1,6 @@
-import { GameMode } from "../../../constant"
-import { useAppContext } from "../../../contexts/Context"
-import { openSaveDrillInput } from "../../../reducer/actions/drill"
+import { GameMode } from "../../../../constant"
+import { useAppContext } from "../../../../contexts/Context"
+import { openSaveDrillInput } from "../../../../reducer/actions/drillCreation"
 
 const SaveDrill = () => {
 

@@ -7,14 +7,14 @@ import './GameEnds.css'
 const GameEnds = ({onClosePopup}) => {
     const {appState : {status}, dispatch} = useAppContext();
 
-    if(!(status.endsWith('Wins') || status.endsWith('stalemate') || status.endsWith('material'))) {
+    if(!(status === Status.black|| status === Status.white || status === Status.insufficient || status === Status.stalemate)) {
         return null
     }
 
     const isWin = status.endsWith('Wins')
 
     const newGame = () =>{
-        dispatch(setupNewGame(createInitialGameState()))
+        dispatch(setupNewGame(createInitialGameState())) 
     }
 
 

@@ -1,6 +1,5 @@
-import { useAppContext } from "../contexts/Context";
 
-type drillNotationParam = {
+type DrillNotationParam = {
     rank: number;
     file: number;
     x: number;
@@ -9,8 +8,15 @@ type drillNotationParam = {
     
 }
 
+export type ReturnDrillMoves = {
+    from: [number,number]
+    to: [number,number]
+    promotes?: string 
+}
 
-export const makeDrillNotation = ({rank,file,x,y,promotesTo}: drillNotationParam) => {
+
+
+export const makeDrillNotation = ({rank,file,x,y,promotesTo}: DrillNotationParam): ReturnDrillMoves => {
     
     return {
         from: [rank,file],
@@ -20,13 +26,19 @@ export const makeDrillNotation = ({rank,file,x,y,promotesTo}: drillNotationParam
     }
 }
 
-type makeDrillParam = {
+type MakeDrillParam = {
     drillLength: number
-    drillMoves: []
+    drillMoves: ReturnDrillMoves[]
     namedDrill: string
 }
 
-export const createDrillObj = ({drillLength,drillMoves,namedDrill}: makeDrillParam) => {
+export type ReturnDrillObject = {
+    id: number
+    moves: ReturnDrillMoves[]
+    name: string
+}
+
+export const createDrillObj = ({drillLength,drillMoves,namedDrill}: MakeDrillParam): ReturnDrillObject => {
     
     return {
         id: drillLength,

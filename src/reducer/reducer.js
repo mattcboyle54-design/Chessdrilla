@@ -120,9 +120,11 @@ export const reducer = (state, action) => {
             
             return {
                 ...action.payload,
+                drills,
                 gameMode: GameMode.analysis,
-                ...drills
+                status: Status.ongoing
             }
+
          }
 
          case actionTypes.INSUFFICENT_MATERIAL: {
@@ -143,11 +145,13 @@ export const reducer = (state, action) => {
 
          //Drill section 
          case actionTypes.DRILL_MODE: {
+            let {drills} = state
+            
             return {
-                ...state,
+                ...action.payload,
+                drills,
                 gameMode: GameMode.drill,
-                status: Status.ongoing,
-                drillMoves: [],
+                status: Status.ongoing
             }
          }
 
@@ -193,6 +197,35 @@ export const reducer = (state, action) => {
             return{
                 ...state,
                 drills
+            }
+         }
+
+         case actionTypes.PULL_DRILL: {
+            return {
+                ...state,
+                selectedDrill: action.payload
+            }
+         }
+
+         case actionTypes.PLAY_DRILL: {
+            let {drills,selectedDrill} = state
+            
+            return {
+                ...action.payload.newGameState,
+                drills,
+                selectedDrill,
+                gameMode: GameMode.play,
+                status: Status.ongoing,
+                drillSequence: action.payload.drillSequence.moves
+            }
+         }
+
+         case actionTypes.UPDATE_DRILL_SEQUENCE: {
+            let {drillSequence} = state
+            drillSequence = drillSequence.slice(1,drillSequence.length)
+            return {
+                ...state,
+                drillSequence
             }
          }
         default: 

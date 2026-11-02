@@ -13,9 +13,8 @@ Early development.
 ## Planned Features
 
 
-- Interactive chessboard
-- Custom position creation
-- Custom drill creation
+- Interactive chessboard (DONE)
+- Custom drill creation (Initial implementation)
 - Saved drills
 - Practice Mode
 - Backend and PostgreSQL persistence

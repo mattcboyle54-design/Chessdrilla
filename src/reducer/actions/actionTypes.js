@@ -15,5 +15,9 @@ const actionTypes = {
     "OPEN_SAVE": "OPEN_SAVE",
     "CLOSE_SAVE": "CLOSE_SAVE",
     "SAVE_DRILL": 'SAVE_DRILL',
+    "PULL_DRILL": "PULL_DRILL",
+    "PLAY_DRILL": "PLAY_DRILL",
+    "UPDATE_DRILL_SEQUENCE": "UPDATE_DRILL_SEQUENCE",
+
 }
 export default actionTypes

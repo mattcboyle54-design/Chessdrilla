@@ -32,3 +32,10 @@ export const detectCheckmate = winner => {
         payload: winner
     }
 }
+
+export const setupBoard = (newGameState) => {
+    return {
+        type: actionTypes.NEW_GAME,
+        payload: newGameState
+    }
+}

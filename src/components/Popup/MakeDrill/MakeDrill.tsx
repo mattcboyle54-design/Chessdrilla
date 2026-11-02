@@ -2,8 +2,8 @@ import { Status } from "../../../constant"
 import { useAppContext } from "../../../contexts/Context"
 import { useRef } from 'react'
 import { createDrillObj } from "../../../drillManager/drillManager"
-import { closeSavedDrillInput, getSavedDrill } from "../../../reducer/actions/drill"
-
+import { closeSavedDrillInput, getSavedDrill } from "../../../reducer/actions/drillCreation"
+import "./MakeDrill.css"
 const MakeDrill = () => {
 
     const {appState: {status,drillMoves,drills},dispatch} = useAppContext()
@@ -22,16 +22,19 @@ const MakeDrill = () => {
     }
     
 
-    return <div className = 'popup--inner popup--inner_center '>
-        <label>Please Name Your Drill
+    return <div className = 'popup--inner popup--inner_center make-drill-popup'>
+        <label className="make-drill-label">Please Name Your Drill
             <input
             type = 'text'
             ref = {nameDrillRef}
             />
         </label>
 
-        <button onClick={saveDrill}>Save</button>
-        <button onClick={() => dispatch(closeSavedDrillInput())}>Cancel</button>
+        <div className="make-drill-buttons">
+            <button onClick={saveDrill}>Save</button>
+            <button onClick={() => dispatch(closeSavedDrillInput())}>Cancel</button>    
+        </div>
+
     </div>
 }
 

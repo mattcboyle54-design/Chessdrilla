@@ -15,7 +15,7 @@ export const GameMode = {
     'start' : 'Start',
     'drill': 'DrillMode',
     'analysis': 'AnalysisMode',
-    'PlayDrill': 'PlayDrill',
+    'play': 'PlayDrill',
 }
 
 export const initGameState = {
@@ -40,21 +40,33 @@ export const initGameState = {
     //Drill management 
     drillMoves: [],
     drills: [],
+    selectedDrill: null,
+    drillSequence: null, 
 } 
 
 export const createInitialGameState = () => ({
+    //game logic related 
     position: [createPosition()],
     castleHistory: [{
         w: 'both', b: 'both'
     }],
-    turn: 'w',
+    turn : 'w',
     movesList : [],
-    candidateMoves: [],
-    castleDirection: {
-        w: 'both',
-        b: 'both'
-    },
-    status: Status.ongoing,
+    candidateMoves : [],
     promotionSquare: null,
+    castleDirection : {
+        w: 'both',
+        b: 'both',
+    },
 
+    //Gamemode and Gamestate management 
+    status : Status.start,
+    gameMode: GameMode.start,
+
+    //Drill management 
+    drillMoves: [],
+    drills: [],
+    selectedDrill: null,
+    drillSequence: null, 
 })
+

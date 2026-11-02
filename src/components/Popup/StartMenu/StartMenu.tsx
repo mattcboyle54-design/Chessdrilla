@@ -1,6 +1,6 @@
 import { createInitialGameState, Status } from '../../../constant';
 import { useAppContext } from '../../../contexts/Context';
-import { setupDrillMode } from '../../../reducer/actions/drill';
+import { setupDrillMode } from '../../../reducer/actions/drillCreation';
 import { setupNewGame } from '../../../reducer/actions/game';
 import './StartMenu.css'
 
@@ -17,7 +17,7 @@ const StartMenu = () => {
     }
 
     const drillMode = () => {
-        dispatch(setupDrillMode())
+        dispatch(setupDrillMode(createInitialGameState()))
     }
 
     return <div className = 'popup--inner popup--inner_center '>
