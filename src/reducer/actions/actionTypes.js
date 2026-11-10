@@ -18,6 +18,9 @@ const actionTypes = {
     "PULL_DRILL": "PULL_DRILL",
     "PLAY_DRILL": "PLAY_DRILL",
     "UPDATE_DRILL_SEQUENCE": "UPDATE_DRILL_SEQUENCE",
+    "FAILURE": "FAILURE",
+    "CLOSE_FAILURE": "CLOSE_FAILURE",
+    "DRILL_SUCCESS": "DRILL_SUCCESS",
 
 }
 export default actionTypes

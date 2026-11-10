@@ -9,10 +9,12 @@ import arbiter from '../../arbiter/arbiter'
 import { openPromotion } from '../../reducer/actions/popup'
 import { getCastleDirections } from '../../arbiter/getMoves'
 import { detectCheckmate, detectInsufficentMaterial, detectStalemate, updateCastling } from '../../reducer/actions/game'
-import { getNewMoveNotation } from '../../helper'
+import { copyPosition, getNewMoveNotation } from '../../helper'
 import { GameMode } from '../../constant'
 import { makeNewDrillMove } from '../../reducer/actions/drillCreation'
 import { makeDrillNotation } from '../../drillManager/drillManager'
+import { openDrillSucess, openFailedSqaure, updateDrillSequence } from '../../reducer/actions/drill'
+import drillTrainer from '../../drillManager/drillTrainer'
 
 
 
@@ -63,11 +65,81 @@ const Pieces = () => {
     
     const move = e => {
 
+        //Piece movement/game orchestration 
         const {x,y} = calculateCoords(e)
         
         const [piece,rank,file] = e.dataTransfer.getData("text").split(',')
+        let candidateMoves = appState.candidateMoves
+        
+        
+        //orchestration that checks for correct drill movement 
+        if(appState.gameMode === GameMode.play){
+            
+            const drillSequence = appState.drillSequence
+            const drillPointer = appState.drillPointer
+            const drillMoves = drillSequence.moves
 
-        if(appState.candidateMoves?.find(m => m[0] === x && m[1] === y)){
+            //Player move 
+            //Correct moves 
+    
+            if(drillTrainer.isCorrectMove({rank,file,x,y,drillPointer,drillMoves})) {
+              
+                dispatch(updateDrillSequence())
+
+                //pawn promotion(is a special case)
+                if((piece === 'wp' && x === 7) || (piece === 'bp' && x === 0)){
+                    const newPosition = copyPosition(appState.position[appState.position.length-1])
+                    newPosition[rank][file] = ''
+                    newPosition[x][y] = piece[0] + drillMoves[drillPointer].promotes
+                    
+                    const opponent = piece.startsWith('b') ? 'w' : 'b'
+                    const castleDirection = appState.castleDirection[`${piece.startsWith('b') ? 'w' : 'b'}`]
+
+                    const newMove = getNewMoveNotation({
+                        piece: piece,
+                        rank,
+                        file,
+                        x,
+                        y,
+                        promotesTo : drillMoves[drillPointer].promotes,
+                        position: appState.position[appState.position.length - 1],
+                        newPosition,
+                        opponent,
+                        castleDirection,
+                    })
+                    
+                    const newCastleHistory = updateCastleHistory({piece,rank,file,x,y})
+                    dispatch(updateCastling(newCastleHistory))
+                    
+                    dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
+
+                    if(drillMoves.length-1 <=drillPointer) 
+                        dispatch(openDrillSucess())
+                    return 
+                } 
+
+
+                //end of drill check 
+                if(drillMoves.length-1 <=drillPointer) 
+                    dispatch(openDrillSucess())
+            }
+            //incorrect moves 
+            else if(candidateMoves.find(m => m[0] === x && m[1] === y)){
+                
+                dispatch(openFailedSqaure({x,y})) 
+                return 
+            }
+
+            //illegal moves 
+            else {
+                return
+            }
+             
+
+        }
+
+
+        if(candidateMoves?.find(m => m[0] === x && m[1] === y)){
 
             const opponent = piece.startsWith('b') ? 'w' : 'b'
             const castleDirection = appState.castleDirection[`${piece.startsWith('b') ? 'w' : 'b'}`]
@@ -96,10 +168,18 @@ const Pieces = () => {
 
             dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
             
+            
+            if(appState.gameMode === GameMode.play) {
+                const drillSequence = appState.drillSequence
+                const drillPointer = appState.drillPointer
+                const drillMoves = drillSequence.moves
 
+                if(drillMoves.length-1 <=drillPointer) 
+                    dispatch(openDrillSucess())
+            }
 
             
-            
+            //End of game scenarios 
             if(appState.gameMode === GameMode.analysis) {
                 //Checking for end of game 
                 if(arbiter.isStalemate(newPosition,opponent,castleDirection))
@@ -116,12 +196,14 @@ const Pieces = () => {
             
             }
 
+            //Saving drill movement 
             if(appState.gameMode === GameMode.drill){
 
                 dispatch(makeNewDrillMove(makeDrillNotation({rank,file,x,y})))
 
             }
-            
+
+ 
             
         }
         dispatch(clearCandidates())
@@ -130,7 +212,7 @@ const Pieces = () => {
     //Updates the board with reducer dispatch function for the piece move based on the rank and file we got from calculatecoords. Uses the information from onDragstart to grab the original position and remove piece from array
     const onDrop = e => {
         e.preventDefault()
-
+        
         move (e)
         
     }

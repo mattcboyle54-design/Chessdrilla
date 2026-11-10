@@ -6,7 +6,7 @@
     --bg-color : #202020;
     --highlight : #FEEC48;
     --hover-color: #808080;
-
+    --red-highlight:  #ff5555;
 }
 
 /* Shrinks the board on smaller screens */
@@ -16,3 +16,16 @@
     }
 }
 
+@keyframes failedFlash {
+    0% {
+        opacity: 70%;
+    }
+
+    50% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 70%;
+    }
+}

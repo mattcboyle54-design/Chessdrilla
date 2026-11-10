@@ -60,9 +60,40 @@
     display: block;
     width: var(--tile-size);
     height: var(--tile-size);
-    background: red;
+    background: var(--highlight);
     border-radius: 20%;
     left: 0%;
     top: 0%;
     opacity: 70%;
+}
+
+.checkmate::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: var(--tile-size);
+    height: var(--tile-size);
+    background: var(--red-highlight);
+    border-radius: 20%;
+    left: 0%;
+    top: 0%;
+
+}
+
+.failed::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: var(--tile-size);
+    height: var(--tile-size);
+    border-radius: 0%;
+    left: 0%;
+    top: 0%;
+    background-color: var(--red-highlight);
+    transform: none;
+    opacity: 1;
+    border: none;
+
+    animation: failedFlash .75s ease-in-out 2;
+
 }

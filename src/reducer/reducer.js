@@ -216,16 +216,36 @@ export const reducer = (state, action) => {
                 selectedDrill,
                 gameMode: GameMode.play,
                 status: Status.ongoing,
-                drillSequence: action.payload.drillSequence.moves
+                drillSequence: action.payload.drillSequence
             }
          }
 
          case actionTypes.UPDATE_DRILL_SEQUENCE: {
-            let {drillSequence} = state
-            drillSequence = drillSequence.slice(1,drillSequence.length)
+            let {drillPointer} = state
             return {
                 ...state,
-                drillSequence
+                drillPointer: drillPointer+1,
+            }
+         }
+
+         case actionTypes.FAILURE: {
+            return {
+                ...state,
+                failedSqaure: action.payload,
+            }
+         }
+
+         case actionTypes.CLOSE_FAILURE: {
+            return {
+                ...state,
+                failedSqaure: null
+            }
+         }
+
+         case actionTypes.DRILL_SUCCESS: {
+            return {
+                ...state,
+                status: Status.drillFinished
             }
          }
         default: 

@@ -9,6 +9,7 @@ export const Status = {
     'insufficient' : 'Game draws due to insufficent material',
     'saving': "Saving",
     'start': 'Start',
+    'drillFinished': 'drillFinished'
 }
 
 export const GameMode = {
@@ -41,7 +42,10 @@ export const initGameState = {
     drillMoves: [],
     drills: [],
     selectedDrill: null,
+
     drillSequence: null, 
+    drillPointer: 0,
+    failedSqaure: null
 } 
 
 export const createInitialGameState = () => ({
@@ -67,6 +71,9 @@ export const createInitialGameState = () => ({
     drillMoves: [],
     drills: [],
     selectedDrill: null,
+    //Still Drill management but also playing drills 
     drillSequence: null, 
+    drillPointer: 0,
+    failedSqaure: null
 })
 

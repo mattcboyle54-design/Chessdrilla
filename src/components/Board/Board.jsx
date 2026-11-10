@@ -11,13 +11,14 @@ import GameEnds from '../Popup/GameEnds/GameEnds'
 import StartMenu from '../Popup/StartMenu/StartMenu'
 import MakeDrill from '../Popup/MakeDrill/MakeDrill'
 import { GameMode } from '../../constant'
+import FinishDrill from '../Popup/DrillEnds/DrillEnds'
 //Create a board from ranks and tiles using nested maps. Ranks are 8-1 and tiles are a-h. Each square is a div with the rank and tile as text.
 const Board = () => {
        //Creates an empty array that map uses to fill a new array ranks a tiles. String allows tiles to based as their proper letters 
     const ranks = Array(8).fill(0).map((_, i) => 8 - i)
     const tiles = Array(8).fill(0).map((_, i) => i + 1)
 
-    const {appState} = useAppContext()
+    const {appState,dispatch} = useAppContext()
     const position = appState.position[appState.position.length-1]
 
     const isChecked = (() => {
@@ -35,9 +36,7 @@ const Board = () => {
         let c = 'tile'
         c+= (i+j) % 2 === 0 ? ' tile--dark' : ' tile--light'
 
-        if(appState.gameMode !== GameMode.play && 
-           appState.candidateMoves?.find(m=> m[0] === i && m[1] === j)
-        ){
+        if(appState.candidateMoves?.find(m=> m[0] === i && m[1] === j)){
             if(position[i][j]) {
                 c+= ' attacking'
             }
@@ -45,9 +44,20 @@ const Board = () => {
                 c+= ' highlight'
             }
         }
-           
-        if(isChecked && isChecked[0] === i && isChecked[1] === j)
-            c+= ' checked'
+
+        if(isChecked && isChecked[0] === i && isChecked[1] === j){
+            if(arbiter.isCheckmate(position,appState.turn,appState.castleDirection))
+                c+= ' checkmate'
+            else 
+                c+= ' checked'
+        }
+        
+        if(appState.gameMode === GameMode.play){
+            if(appState.failedSqaure?.x === i && appState.failedSqaure.y === j){
+                c+= ' failed'
+            }
+            
+        }
         return c
     }
 
@@ -74,6 +84,7 @@ const Board = () => {
             <GameEnds />
             <StartMenu />
             <MakeDrill />
+            <FinishDrill />
        </Popup>
 
        <Files files = {tiles}/>

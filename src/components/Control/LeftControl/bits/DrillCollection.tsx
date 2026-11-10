@@ -8,7 +8,7 @@ const DrillCollection = () => {
     const {appState,dispatch} = useAppContext()
     const drills: ReturnDrillObject[] = appState.drills
 
-    if(!drills) return
+    if(!drills) return null
 
     return <div className = "drill-list">
         {

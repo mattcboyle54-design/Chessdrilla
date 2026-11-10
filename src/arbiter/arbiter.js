@@ -35,7 +35,7 @@ const arbiter = {
 
 
     },
-
+    //Calculates candidate moves for piece.jsx 
     getValidMoves : function ({position,castleDirection,prevPosition,piece,rank,file}) {
  
         let moves = this.getRegularMoves({position,piece,rank,file})

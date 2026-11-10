@@ -27,13 +27,13 @@ export const makeDrillNotation = ({rank,file,x,y,promotesTo}: DrillNotationParam
 }
 
 type MakeDrillParam = {
-    drillLength: number
+    drillLength: string
     drillMoves: ReturnDrillMoves[]
     namedDrill: string
 }
 
 export type ReturnDrillObject = {
-    id: number
+    id: string
     moves: ReturnDrillMoves[]
     name: string
 }

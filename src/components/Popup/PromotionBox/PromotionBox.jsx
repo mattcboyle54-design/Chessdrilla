@@ -1,5 +1,6 @@
 import arbiter from '../../../arbiter/arbiter'
 import { getCastleDirections } from '../../../arbiter/getMoves'
+import { GameMode } from '../../../constant'
 import { useAppContext } from '../../../contexts/Context'
 import { makeDrillNotation } from '../../../drillManager/drillManager'
 import { copyPosition, getNewMoveNotation } from '../../../helper'
@@ -57,7 +58,7 @@ const PromotionBox = ({onClosePopup}) => {
 
     const onClick = option => {
         onClosePopup()
-        
+
         const newPosition = copyPosition(appState.position[appState.position.length-1])
 
         newPosition[promotionSquare.rank][promotionSquare.file] = ''
@@ -81,8 +82,8 @@ const PromotionBox = ({onClosePopup}) => {
         })
         if(gameMode === 'DrillMode'){
             dispatch(makeNewDrillMove(makeDrillNotation({
-                rank: promotionSquare.rank,
-                file: promotionSquare.file,
+                rank: String(promotionSquare.rank),
+                file: String(promotionSquare.file),
                 x: promotionSquare.x, 
                 y:promotionSquare.y,
                 promotesTo:option,
@@ -92,20 +93,19 @@ const PromotionBox = ({onClosePopup}) => {
         dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
          
 
-        if(arbiter.isCheckmate(newPosition,opponent,castleDirection)){
-            dispatch(detectCheckmate(turn))
+        if(gameMode === GameMode.analysis) {
+            if(arbiter.isCheckmate(newPosition,opponent,castleDirection))
+                dispatch(detectCheckmate(turn))
+        
+            else if(arbiter.isStalemate(newPosition,opponent,castleDirection))
+                dispatch(detectStalemate())
+                        
+            else if(arbiter.insufficentMaterial(newPosition))
+            dispatch(detectInsufficentMaterial())
+            
+       
         }
 
-        else if(arbiter.isStalemate(newPosition,opponent,castleDirection)){
-                dispatch(detectStalemate())
-            }
-            
-        else if(arbiter.insufficentMaterial(newPosition)){
-            dispatch(detectInsufficentMaterial())
-            } else if (arbiter.isStalemate(newPosition,opponent,castleDirection)){
-                dispatch(detectStalemate()) 
-            }
-       
     }
 
 

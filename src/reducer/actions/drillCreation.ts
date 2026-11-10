@@ -32,7 +32,7 @@ export const closeSavedDrillInput = () => {
     }
 }
 
-export const getDrillId = (id: number) => {
+export const getDrillId = (id: string) => {
     return {
         type: actionTypes.PULL_DRILL,
         payload: id,
