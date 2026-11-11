@@ -68,10 +68,10 @@ const arbiter = {
         return notInCheckMoves
     },
 
-    performMove : function ({position,piece,rank,file,x,y}) {
+    performMove : function ({position,piece,rank,file,x,y,promotesTo}) {
 
         if(piece.endsWith('p')){
-            return movePawn({position,piece,rank,file,x,y})
+            return movePawn({position,piece,rank,file,x,y,promotesTo})
         }
         else {
             return movePiece({position,piece,rank,file,x,y})

@@ -20,13 +20,17 @@ export const movePiece = ({position,piece,rank,file,x,y}) => {
     return newPosition
 }
 
-export const movePawn = ({position,piece,rank,file,x,y}) => {
+export const movePawn = ({position,piece,rank,file,x,y,promotesTo}) => {
     const newPosition = copyPosition(position)
     if(!newPosition[x][y] && x !== rank && y!== file)
         newPosition[rank][y] = ''
     
-    
     newPosition[rank][file] = ''
+    
+    if(promotesTo)
+        newPosition[x][y] = piece[0] + promotesTo
+
+    else 
     newPosition[x][y] = piece
 
      return newPosition

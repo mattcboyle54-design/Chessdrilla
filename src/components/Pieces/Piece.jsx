@@ -13,11 +13,18 @@ const Piece = ({
     const {appState,dispatch} = useAppContext()
     const {turn, castleDirection, position : currentPosition} = appState
 
-    //const canDrag = appState.gameMode === GameMode.play? piece.startsWith(appState.drillSequence.id[0]): true 
-    const canDrag = true 
-    //give information on the piece specifically piece type ie: bk, rank, and file (so you know which piece is moved and from what original spot). Removes the original piece's png with a delay so you can see piece while dragging
+    const canDrag = appState.gameMode === GameMode.play? piece.startsWith(appState.drillSequence.id[0]): true 
+
+    //Handles piece dragging and calls arbiter to handle legal piece moves 
     const onDragStart = e=> {
-        
+    
+     const rect = e.currentTarget.getBoundingClientRect();
+
+    console.log({
+        tag: e.currentTarget.tagName,
+        width: rect.width,
+        height: rect.height
+    }); 
         if(appState.failedSqaure)                
             dispatch(closeFailedSqaure())
               

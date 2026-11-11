@@ -1,12 +1,6 @@
-import arbiter from '../../../arbiter/arbiter'
-import { getCastleDirections } from '../../../arbiter/getMoves'
-import { GameMode } from '../../../constant'
+
 import { useAppContext } from '../../../contexts/Context'
-import { makeDrillNotation } from '../../../drillManager/drillManager'
-import { copyPosition, getNewMoveNotation } from '../../../helper'
-import { makeNewDrillMove } from '../../../reducer/actions/drillCreation'
-import { detectCheckmate, detectInsufficentMaterial, detectStalemate, updateCastling } from '../../../reducer/actions/game'
-import { clearCandidates, makeNewMove } from '../../../reducer/actions/move'
+import useChessMoves from '../../../hooks/useChessMoves'
 import './PromotionBox.css'
 
 const PromotionBox = ({onClosePopup}) => {
@@ -15,26 +9,14 @@ const PromotionBox = ({onClosePopup}) => {
 
     const {appState,dispatch} = useAppContext()
     const {promotionSquare,turn,gameMode} = appState
-
+    const {executeMove} = useChessMoves()
+    
     if(!promotionSquare)  {
         return null
     }
     const color = promotionSquare.x === 7 ? 'w' : 'b'
 
 
-    const updateCastleHistory = ({piece,rank,file,x,y}) =>{
-        const castleDirection = getCastleDirections({
-            castleDirection : appState.castleDirection,
-            piece,rank,file,
-            x,y,
-        })
-        if(castleDirection) {
-            return castleDirection
-        }
-        else {
-            return
-        }
-    }
     const getPromotionBoxPosition = () => {
         const style = {}
 
@@ -58,53 +40,9 @@ const PromotionBox = ({onClosePopup}) => {
 
     const onClick = option => {
         onClosePopup()
+        const {piece,rank,file,x,y} = promotionSquare
 
-        const newPosition = copyPosition(appState.position[appState.position.length-1])
-
-        newPosition[promotionSquare.rank][promotionSquare.file] = ''
-        newPosition[promotionSquare.x][promotionSquare.y] = color + option
-        dispatch(clearCandidates())
-
-
-        const castleDirection = appState.castleDirection[`${turn === 'b' ? 'w' : 'b'}`]
-        const opponent = turn === 'w'? 'b': 'w'
-        
-        const newCastleHistory = updateCastleHistory({piece : promotionSquare.piece, x: promotionSquare.x, y: promotionSquare.y})
-        dispatch(updateCastling(newCastleHistory))
-        const newMove = getNewMoveNotation({
-            ...promotionSquare,
-            piece: color + 'p',
-            promotesTo : option,
-            position: appState.position[appState.position.length - 1],
-            newPosition,
-            opponent,
-            castleDirection,
-        })
-        if(gameMode === 'DrillMode'){
-            dispatch(makeNewDrillMove(makeDrillNotation({
-                rank: String(promotionSquare.rank),
-                file: String(promotionSquare.file),
-                x: promotionSquare.x, 
-                y:promotionSquare.y,
-                promotesTo:option,
-            })))
-        }
-
-        dispatch(makeNewMove({newPosition,newMove,newCastleHistory}))
-         
-
-        if(gameMode === GameMode.analysis) {
-            if(arbiter.isCheckmate(newPosition,opponent,castleDirection))
-                dispatch(detectCheckmate(turn))
-        
-            else if(arbiter.isStalemate(newPosition,opponent,castleDirection))
-                dispatch(detectStalemate())
-                        
-            else if(arbiter.insufficentMaterial(newPosition))
-            dispatch(detectInsufficentMaterial())
-            
-       
-        }
+        executeMove({piece,rank,file,x,y,promotesTo: option})
 
     }
 

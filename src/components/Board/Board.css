@@ -94,6 +94,6 @@
     opacity: 1;
     border: none;
 
-    animation: failedFlash .75s ease-in-out 2;
+    animation: failedFlash .75s ease-in-out 2.25;
 
 }
