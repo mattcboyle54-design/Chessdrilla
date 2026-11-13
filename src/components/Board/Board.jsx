@@ -53,9 +53,13 @@ const Board = () => {
         }
         
         if(appState.gameMode === GameMode.play){
-            if(appState.failedSqaure?.x === i && appState.failedSqaure.y === j){
+            if(appState.failedSqaure?.x === i && appState.failedSqaure?.y === j)
                 c+= ' failed'
-            }
+            
+            const movedSquare = appState.movedSquare
+            if((movedSquare?.rank === i && movedSquare?.file === j) || (movedSquare?.x === i && movedSquare?.y === j) )
+                c+= ' sucesss'
+            
             
         }
         return c

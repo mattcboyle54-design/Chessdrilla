@@ -21,6 +21,9 @@ const actionTypes = {
     "FAILURE": "FAILURE",
     "CLOSE_FAILURE": "CLOSE_FAILURE",
     "DRILL_SUCCESS": "DRILL_SUCCESS",
+    "NEXT_DRILL": "NEXT_DRILL",
+
+
 
 }
 export default actionTypes

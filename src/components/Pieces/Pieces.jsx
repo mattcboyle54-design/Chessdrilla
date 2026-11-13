@@ -50,8 +50,14 @@ const Pieces = () => {
     
     useEffect(() => {
         if(appState.gameMode !== GameMode.play) return 
-        const drillOpponent = appState.drillSequence.id.startsWith('w')? 'b': 'w'
-        const drillMoves = appState.drillSequence.moves[appState.drillPointer]
+
+        const currentDrillPointer = appState.drillPointer[1]
+        const allDrillPointer = appState.drillPointer[0]
+        const drillSequence = appState.drillSequence
+        const drillMoves = drillSequence[allDrillPointer].moves[currentDrillPointer] 
+
+        const drillOpponent = drillSequence[allDrillPointer].id.startsWith('w')? 'b': 'w'
+
         if(!drillMoves)return 
         if(appState.turn === drillOpponent) {
 

@@ -97,3 +97,18 @@
     animation: failedFlash .75s ease-in-out 2.25;
 
 }
+
+.sucesss::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: var(--tile-size);
+    height: var(--tile-size);
+    border-radius: 0%;
+    left: 0%;
+    top: 0%;
+    background-color: var(--board-highlight);
+    transform: none;
+    border: none;
+
+}

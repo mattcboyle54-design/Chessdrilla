@@ -16,14 +16,17 @@ const PlayDrill = () => {
                 promotes?: string 
             }
             type ReturnDrillObject = {
-                id: number
+                id: string
                 moves: ReturnDrillMoves[]
                 name: string
             }
             
-            const drillSequence = drills.find((drill: ReturnDrillObject) => {
-                return drill.id === selectedDrill
+
+            const drillSequence = drills.filter((drill: ReturnDrillObject) => {
+                return selectedDrill.includes(drill.id)
             })
+
+            
             dispatch(playDrill(createInitialGameState(),drillSequence))
         }
         return 

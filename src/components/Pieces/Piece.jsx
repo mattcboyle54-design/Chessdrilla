@@ -13,18 +13,15 @@ const Piece = ({
     const {appState,dispatch} = useAppContext()
     const {turn, castleDirection, position : currentPosition} = appState
 
-    const canDrag = appState.gameMode === GameMode.play? piece.startsWith(appState.drillSequence.id[0]): true 
+    const allDrillPointer = appState.drillPointer[0]
+    const drillSequence = appState.drillSequence
+    const canDrag = appState.gameMode === GameMode.play? piece.startsWith(drillSequence[allDrillPointer]?.id[0]): true 
 
     //Handles piece dragging and calls arbiter to handle legal piece moves 
     const onDragStart = e=> {
     
      const rect = e.currentTarget.getBoundingClientRect();
 
-    console.log({
-        tag: e.currentTarget.tagName,
-        width: rect.width,
-        height: rect.height
-    }); 
         if(appState.failedSqaure)                
             dispatch(closeFailedSqaure())
               

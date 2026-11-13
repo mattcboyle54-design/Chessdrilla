@@ -65,30 +65,29 @@ const useChessMoves = () => {
         }
 
         else if(appState.gameMode === GameMode.play) {
+            const currentDrillPointer = appState.drillPointer[1]
+            const allDrillPointer = appState.drillPointer[0]
             const drillSequence = appState.drillSequence
-            const drillPointer = appState.drillPointer
-            const drillMoves = drillSequence.moves
-
-
+            
+            const drillMoves = drillSequence[allDrillPointer]?.moves 
+            //Check for outbounds issues 
+            if (!drillMoves?.[currentDrillPointer]) return;
             //Check for correct move, end of drill adn failed moves 
-            if(drillTrainer.isCorrectMove({rank,file,x,y,drillPointer,drillMoves})) {
-
-                dispatch(updateDrillSequence())
+            if(drillTrainer.isCorrectMove({rank,file,x,y,drillPointer: currentDrillPointer,drillMoves})) {
+                const sucessfulMove = {rank,file,x,y}
+                dispatch(updateDrillSequence(sucessfulMove))
                 executeMove({
                         piece,
                         rank,
                         file,
                         x,
                         y,
-                        promotesTo: drillMoves[drillPointer].promotes,})
+                        promotesTo: drillMoves[currentDrillPointer].promotes,})
           
                 
 
-                if(drillMoves.length-1 <=drillPointer) 
+                if(drillMoves.length-1 <=currentDrillPointer) 
                     dispatch(openDrillSucess())
-                else {
-
-                }
             }
 
             else if(candidateMove(x,y)) {

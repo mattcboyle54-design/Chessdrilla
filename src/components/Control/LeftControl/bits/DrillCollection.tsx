@@ -16,9 +16,10 @@ const DrillCollection = () => {
             drills.map((drill)=> {
                 return (
                     <button 
-                        onClick={() => dispatch(getDrillId(drill.id))} 
-                        className = {appState.selectedDrill === drill.id ? "selected" : ""}
                         key = {drill.id}
+                        onClick={() => dispatch(getDrillId(drill.id))} 
+                        className = {appState.selectedDrill?.includes(drill.id) ? "selected" : ""}
+                        
                     >
                         {drill.name}
                     </button>)

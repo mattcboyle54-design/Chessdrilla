@@ -1,5 +1,6 @@
 import actionTypes from "./actions/actionTypes"
 import { GameMode, Status } from "../constant"
+import { act } from "react"
 
 export const reducer = (state, action) => {
     switch(action.type) {
@@ -193,7 +194,7 @@ export const reducer = (state, action) => {
                 ...drills,
                 action.payload
             ]
-        
+            
             return{
                 ...state,
                 drills
@@ -201,30 +202,67 @@ export const reducer = (state, action) => {
          }
 
          case actionTypes.PULL_DRILL: {
+            let {selectedDrill} = state 
+            const drillId = action.payload
+
+            if(selectedDrill) {
+                selectedDrill = selectedDrill.includes(drillId) ? 
+                selectedDrill.filter(id => id !== drillId) :
+                [...selectedDrill,drillId]
+
+                return {
+                    ...state,
+                    selectedDrill
+                }
+
+            }
+
+
             return {
                 ...state,
-                selectedDrill: action.payload
+                selectedDrill: [action.payload]
             }
          }
 
          case actionTypes.PLAY_DRILL: {
-            let {drills,selectedDrill} = state
-            
+            let {drills,selectedDrill,drillSequence,drillPointer} = state
+
+            if(drillPointer[1] > 0) {
+                drillPointer = [
+                    drillPointer[0],
+                    0
+                ]
+            }
+            else {
+                drillSequence = [
+                    ...drillSequence,
+                    ...action.payload.drillSequence
+                ]
+            }
+
             return {
                 ...action.payload.newGameState,
                 drills,
                 selectedDrill,
                 gameMode: GameMode.play,
                 status: Status.ongoing,
-                drillSequence: action.payload.drillSequence
+                drillSequence,
+                drillPointer
+        
             }
          }
 
          case actionTypes.UPDATE_DRILL_SEQUENCE: {
             let {drillPointer} = state
+ 
             return {
                 ...state,
-                drillPointer: drillPointer+1,
+                drillPointer: [
+                    drillPointer[0],
+                    drillPointer[1] + 1
+                ],
+                movedSquare: action.payload,
+                
             }
          }
 
@@ -248,6 +286,25 @@ export const reducer = (state, action) => {
                 status: Status.drillFinished
             }
          }
+
+         case actionTypes.NEXT_DRILL: {
+            let {drillPointer,drills,selectedDrill,drillSequence} = state 
+            drillPointer = [
+                drillPointer[0]+1,
+                0
+            ]
+            return {
+                ...action.payload,
+                drills,
+                selectedDrill,
+                gameMode: GameMode.play,
+                status: Status.ongoing,
+                drillSequence,
+                drillPointer
+        
+            }
+         }
+
         default: 
             return state
     }

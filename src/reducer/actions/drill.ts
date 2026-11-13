@@ -1,15 +1,18 @@
 import actionTypes from "./actionTypes"
 
-export const updateDrillSequence = () => {
-    return {
-        type: actionTypes.UPDATE_DRILL_SEQUENCE,
-    }
+type coordinates = {
+  x: number 
+  y: number
+  piece: string
+  rank: number
+  file: number
 }
 
-type coordinates = {
-    x:number
-    y:number
-    piece:string
+export const updateDrillSequence = (sucessfulMove: coordinates) => {
+    return {
+        type: actionTypes.UPDATE_DRILL_SEQUENCE,
+        payload: sucessfulMove
+    }
 }
 export const openFailedSqaure = ({x,y}: coordinates) => {
     return {
@@ -29,3 +32,14 @@ export const openDrillSucess = () => {
         type: actionTypes.DRILL_SUCCESS
     }
 }
+
+export const setupNextDrill = (newGameState: object) => {
+    return {
+        type: actionTypes.NEXT_DRILL,
+        payload: newGameState
+    }
+}
+
+
+
+

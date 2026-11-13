@@ -39,7 +39,8 @@ export const getDrillId = (id: string) => {
     }
 }
 
-export const playDrill = (newGameState: object, drillSequence: object) => {
+
+export const playDrill = (newGameState: object, drillSequence: [object]) => {
     return {
         type: actionTypes.PLAY_DRILL,
         payload: {newGameState,drillSequence}

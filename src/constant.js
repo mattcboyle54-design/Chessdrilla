@@ -41,11 +41,12 @@ export const initGameState = {
     //Drill management 
     drillMoves: [],
     drills: [],
-    selectedDrill: null,
+    selectedDrill: [],
 
     drillSequence: null, 
     drillPointer: 0,
-    failedSqaure: null
+    failedSqaure: null,
+    movedSqaure: null,
 } 
 
 export const createInitialGameState = () => ({
@@ -72,8 +73,9 @@ export const createInitialGameState = () => ({
     drills: [],
     selectedDrill: null,
     //Still Drill management but also playing drills 
-    drillSequence: null, 
-    drillPointer: 0,
-    failedSqaure: null
+    drillSequence: [], 
+    drillPointer: [0,0],
+    failedSqaure: null,
+    movedSqaure: null,
 })
 
